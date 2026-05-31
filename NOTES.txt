@@ -1,0 +1,360 @@
+═══════════════════════════════════════════════════════════════
+RISERANK BACKEND — NOTES, GAPS & FUTURE DECISIONS
+Last updated: May 2026 — ALL PLANNED FEATURES COMPLETE ✅
+Read this file before starting any new module or deployment.
+═══════════════════════════════════════════════════════════════
+
+────────────────────────────────────────────────────────────────
+SECTION 1: WHAT IS BUILT (current state — FULLY COMPLETE)
+────────────────────────────────────────────────────────────────
+✅ Folder structure (clean MVC with service layer)
+✅ package.json with all production + dev dependencies
+   → added: swagger-ui-express, swagger-jsdoc, csv-parser
+   → devDependencies: jest@29, supertest, nodemon
+✅ Environment config (env.js + .env.example)
+✅ App constants (roles, categories, languages, etc.)
+✅ MongoDB connection with retry logic + graceful shutdown
+✅ All Mongoose models: User, Admin, Category, CurrentAffair,
+   Question, Quiz, QuizAttempt, Leaderboard, Bookmark, Report,
+   ActivityLog, Session
+✅ All MongoDB indexes (including TTL for ActivityLog + Session)
+✅ Utility helpers: logger, apiResponse, asyncHandler,
+   generateToken, pagination, AppError
+✅ All middleware: auth (JWT), authorize (RBAC), validate (Joi),
+   error handler, rate limiter, activity logger,
+   upload (multer memory storage)
+✅ Auth system: register, login, logout, refresh token,
+   change password, admin login, session heartbeat
+✅ Email verification OTP (send + verify)
+✅ Forgot password + reset password via OTP
+✅ Welcome email on register
+✅ All Joi validators: auth, currentAffair, question, quiz,
+   user (updateProfile, addBookmark, reportQuestion,
+   leaderboardQuery), category, admin (createAdmin,
+   changePassword, suspendUser, reviewReport)
+✅ Current Affairs CRUD + publish/archive (bilingual)
+✅ Question CRUD (bilingual MCQ)
+✅ Quiz engine: create, attempt, score calculation, daily quiz
+✅ User features: bookmarks (with note), question reporting,
+   leaderboard, my-rank, profile update (validated)
+✅ Admin & Super Admin: manage admins, users, reports
+✅ Admin profile: GET /admin/me, PUT /admin/me/change-password
+✅ Analytics: DAU, session duration, quiz stats, user growth,
+   admin activity logs, overview stats
+✅ Category Management API (CRUD + slug-based)
+✅ File Upload (S3/R2): user avatar, current-affairs images
+✅ Push Notifications (FCM): register/remove token,
+   toggle notifications, broadcast to all/category/user,
+   daily quiz + streak + leaderboard templates
+✅ Cron Jobs:
+   → 00:01 IST: daily quiz existence check
+   → 08:00 IST: daily quiz FCM broadcast to users by category
+   → 20:00 IST: streak reminder FCM to at-risk users
+   → 23:55 IST: daily leaderboard snapshot
+   → 23:57 IST: all-time leaderboard snapshot
+   → 23:58 IST (Sun only): weekly leaderboard snapshot
+✅ Bulk Question Import: CSV upload (max 500 rows, 2MB),
+   validates ALL rows before any insert (all-or-nothing),
+   all imported as DRAFT. Template download endpoint included.
+   File: import.controller.js, import.service.js
+✅ Admin Seeder script (scripts/seedSuperAdmin.js)
+✅ API Documentation (Swagger/OpenAPI 3.0):
+   → src/config/swagger.js — full spec with all schemas
+   → @openapi JSDoc annotations on all 11 route files
+   → Served at GET /api/v1/docs (swagger-ui-express)
+   → Raw JSON at GET /api/v1/docs.json
+✅ Jest test suite (tests/ folder + jest.config.js):
+   → tests/utils/apiResponse.test.js      (all response helpers)
+   → tests/utils/AppError.test.js         (error class)
+   → tests/middleware/authorize.test.js   (RBAC middleware)
+   → tests/services/auth.service.test.js  (register/login/refresh)
+   → tests/services/quizScoring.test.js   (scoring + edge cases)
+   → tests/services/otp.service.test.js   (OTP verify/reset)
+   → tests/jobs/leaderboard.cron.test.js  (date helpers)
+✅ Express app.js with security: helmet, CORS, mongo-sanitize,
+   HPP, compression, morgan, rate limiting
+✅ server.js: graceful shutdown + unhandled rejection + cron init
+✅ PM2 ecosystem.config.js
+✅ Dockerfile (multi-stage, non-root user)
+✅ docker-compose.yml (backend + local MongoDB)
+✅ Nginx reverse proxy config (rate limiting at Nginx level)
+✅ GitHub Actions CI/CD pipeline (deploy to EC2 via SSH)
+
+────────────────────────────────────────────────────────────────
+SECTION 2: THINGS TO DO BEFORE FIRST DEPLOY
+────────────────────────────────────────────────────────────────
+[ ] Copy .env.example to .env and fill all values
+    → MONGO_URI (MongoDB Atlas connection string)
+    → JWT_SECRET (min 32 random chars)
+    → JWT_REFRESH_SECRET (different from JWT_SECRET)
+    → SMTP_USER + SMTP_PASS (Gmail App Password)
+    → AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY + AWS_S3_BUCKET
+    → FIREBASE credentials (download from Firebase console)
+
+[ ] Run npm install on the server:
+    npm ci --only=production
+
+[ ] Run the Super Admin seed script (ONCE):
+    SUPER_ADMIN_EMAIL=admin@riserank.in \
+    SUPER_ADMIN_PASSWORD=YourSecurePass \
+    node scripts/seedSuperAdmin.js
+
+[ ] Run tests before deployment:
+    npm test
+
+[ ] Set GitHub Actions secrets:
+    EC2_HOST, EC2_USER, EC2_SSH_KEY
+
+────────────────────────────────────────────────────────────────
+SECTION 3: EC2 DEPLOYMENT STEPS (manual — do this once)
+────────────────────────────────────────────────────────────────
+1. Launch EC2 t2.micro (Ubuntu 22.04 LTS) — Free Tier
+2. Open ports: 22 (SSH), 80 (HTTP), 443 (HTTPS — Cloudflare)
+3. SSH into instance:
+   ssh -i your-key.pem ubuntu@<EC2_IP>
+
+4. Install Node.js 18:
+   curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+   sudo apt-get install -y nodejs
+
+5. Install PM2:
+   sudo npm install -g pm2
+
+6. Install Nginx:
+   sudo apt-get install -y nginx
+
+7. Clone your repo:
+   sudo mkdir -p /var/www/riserank-backend
+   sudo chown ubuntu:ubuntu /var/www/riserank-backend
+   cd /var/www/riserank-backend
+   git clone https://github.com/<your-username>/riserank-backend.git .
+
+8. Create .env file:
+   nano .env   ← copy from .env.example and fill values
+
+9. Install production dependencies:
+   npm ci --only=production
+
+10. Seed the Super Admin (first time only):
+    node scripts/seedSuperAdmin.js
+
+11. Start with PM2:
+    pm2 start ecosystem.config.js --env production
+    pm2 save
+    pm2 startup   ← follow the command it prints
+
+12. Copy Nginx config:
+    sudo cp nginx/nginx.conf /etc/nginx/nginx.conf
+    sudo nginx -t
+    sudo systemctl restart nginx
+
+13. Set up GitHub Actions secrets (Settings → Secrets):
+    EC2_HOST=<your-ec2-public-ip>
+    EC2_USER=ubuntu
+    EC2_SSH_KEY=<contents of your .pem file>
+
+After deploy, verify:
+    GET https://api.riserank.in/api/v1/health   → { success: true }
+    GET https://api.riserank.in/api/v1/docs     → Swagger UI
+
+────────────────────────────────────────────────────────────────
+SECTION 4: CLOUDFLARE SETUP
+────────────────────────────────────────────────────────────────
+1. Add riserank.in to Cloudflare (free plan)
+2. Create A record: api.riserank.in → EC2 public IP (Proxied: ON)
+3. SSL/TLS mode: Full (not Strict — EC2 has no SSL cert)
+4. Enable: Always Use HTTPS, HSTS, Minify JS/CSS/HTML
+
+────────────────────────────────────────────────────────────────
+SECTION 5: IMPORTANT TECHNICAL DECISIONS MADE
+────────────────────────────────────────────────────────────────
+- Bilingual pattern: { en: String, hi: String } embedded in each doc
+  → Do NOT change this to separate collections mid-development
+- Admin and User are separate collections/models intentionally
+  → Mixing them causes role confusion and query complexity
+- Leaderboard is snapshot-based (not real-time aggregation)
+  → Real-time aggregation on every page load would kill Atlas free tier
+- ActivityLog TTL = 90 days → balances analytics vs Atlas storage
+- Session TTL = 180 days → needed for long-term DAU analytics
+- Docker not used on EC2 → PM2 runs Node directly to save RAM
+- Rate limiting is in-memory → acceptable for MVP
+- OTP is hashed (bcrypt) before storing → secure against DB leaks
+- FCM tokens stored on User (max 5 per user) → multi-device support
+- Email failures never throw → logged but don't break auth flow
+- Cron jobs run in IST (Asia/Kolkata timezone)
+- S3 uploads use memory storage (multer) → no temp files on disk
+- CSV import is all-or-nothing → no partial imports that leave DB dirty
+- Swagger docs: persistAuthorization=true → token survives page refresh
+- swagger-jsdoc version: 6.x (not 7.x) → compatible with current Express
+
+────────────────────────────────────────────────────────────────
+SECTION 6: COMPLETE API ROUTE MAP
+────────────────────────────────────────────────────────────────
+Base URL: /api/v1
+Interactive docs: GET /api/v1/docs
+
+AUTH
+  POST   /auth/register
+  POST   /auth/login
+  POST   /auth/admin/login
+  POST   /auth/refresh
+  POST   /auth/logout                   [protected]
+  GET    /auth/me                       [protected]
+  PUT    /auth/change-password          [protected]
+  POST   /auth/heartbeat                [protected]
+  POST   /auth/send-verification-otp   [protected]
+  POST   /auth/verify-email            [protected]
+  POST   /auth/forgot-password
+  POST   /auth/reset-password
+
+USERS
+  GET    /users/profile                 [protected]
+  PUT    /users/profile                 [protected]
+  GET    /users/bookmarks               [protected]
+  POST   /users/bookmarks/:questionId   [protected]
+  DELETE /users/bookmarks/:questionId   [protected]
+  POST   /users/report/:questionId      [protected]
+  GET    /users/leaderboard             [protected]
+  GET    /users/leaderboard/my-rank     [protected]
+
+CATEGORIES
+  GET    /categories                    [protected]
+  GET    /categories/:id                [protected]
+  POST   /categories                    [admin+]
+  PUT    /categories/:id                [admin+]
+  DELETE /categories/:id                [superadmin]
+
+CURRENT AFFAIRS
+  GET    /current-affairs               [protected]
+  GET    /current-affairs/:id           [protected]
+  POST   /current-affairs               [admin+]
+  PUT    /current-affairs/:id           [admin+]
+  DELETE /current-affairs/:id           [admin+]
+  PATCH  /current-affairs/:id/publish   [admin+]
+  PATCH  /current-affairs/:id/archive   [admin+]
+
+QUESTIONS
+  GET    /questions                     [protected]
+  GET    /questions/:id                 [protected]
+  POST   /questions                     [admin+]
+  PUT    /questions/:id                 [admin+]
+  DELETE /questions/:id                 [admin+]
+
+QUIZZES
+  GET    /quizzes/daily                 [protected]
+  GET    /quizzes/history               [protected]
+  GET    /quizzes                       [protected]
+  GET    /quizzes/:id                   [protected]
+  POST   /quizzes/:id/start             [protected]
+  POST   /quizzes/:id/submit            [protected, rate-limited]
+  POST   /quizzes                       [admin+]
+  PUT    /quizzes/:id                   [admin+]
+  DELETE /quizzes/:id                   [admin+]
+
+ADMIN
+  GET    /admin/me                      [admin+]
+  PUT    /admin/me/change-password      [admin+]
+  POST   /admin/admins                  [superadmin]
+  GET    /admin/admins                  [superadmin]
+  DELETE /admin/admins/:id              [superadmin]
+  GET    /admin/users                   [admin+]
+  GET    /admin/users/:id               [admin+]
+  PATCH  /admin/users/:id/suspend       [admin+]
+  PATCH  /admin/users/:id/unsuspend     [admin+]
+  DELETE /admin/users/:id               [superadmin]
+  GET    /admin/reports                 [admin+]
+  PATCH  /admin/reports/:id/review      [admin+]
+
+ANALYTICS (superadmin only)
+  GET    /analytics/overview
+  GET    /analytics/dau
+  GET    /analytics/session-duration
+  GET    /analytics/quiz-stats
+  GET    /analytics/most-active-users
+  GET    /analytics/user-growth
+  GET    /analytics/admin-logs
+
+UPLOAD
+  POST   /upload/avatar                 [protected]
+  POST   /upload/current-affairs/:id   [admin+]
+
+NOTIFICATIONS
+  POST   /notifications/token          [protected]
+  DELETE /notifications/token          [protected]
+  PATCH  /notifications/toggle         [protected]
+  POST   /notifications/broadcast      [admin+]
+  POST   /notifications/user/:userId   [admin+]
+
+IMPORT
+  GET    /import/template               [admin+]
+  POST   /import/questions              [admin+]
+
+────────────────────────────────────────────────────────────────
+SECTION 7: SCALING ROADMAP
+────────────────────────────────────────────────────────────────
+Phase 1 (0-1K DAU): Current setup
+  → t2.micro, MongoDB Atlas Free, PM2 instances:1
+
+Phase 2 (1K-10K DAU):
+  → Upgrade to t3.small ($15/mo)
+  → MongoDB Atlas M10 ($57/mo)
+  → Add Redis Cloud (rate limiting + leaderboard cache)
+  → PM2 cluster mode (instances: 'max')
+
+Phase 3 (10K-100K DAU):
+  → Add ALB + 2nd EC2 instance
+  → Consider RDS for analytics (keep MongoDB for content)
+  → Cloudfront CDN for S3 assets
+
+Phase 4 (100K+ DAU):
+  → Split into microservices: Auth, Content, Quiz, Analytics
+  → MongoDB Atlas M30+ dedicated cluster
+
+────────────────────────────────────────────────────────────────
+SECTION 8: ENVIRONMENT VARIABLES REFERENCE
+────────────────────────────────────────────────────────────────
+See .env.example for all variables with comments.
+Critical (must set before first run):
+  MONGO_URI
+  JWT_SECRET              (min 32 random characters)
+  JWT_REFRESH_SECRET      (different from JWT_SECRET)
+
+Needed for full feature set:
+  SMTP_HOST / SMTP_PORT / SMTP_USER / SMTP_PASS
+  AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / AWS_REGION
+  AWS_S3_BUCKET / AWS_S3_BASE_URL
+  FIREBASE_PROJECT_ID / FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY
+  SUPER_ADMIN_EMAIL / SUPER_ADMIN_PASSWORD  (seed script only)
+
+Optional:
+  LOG_LEVEL           (default: info)
+  LOG_DIR             (default: logs/)
+  ALLOWED_ORIGINS     (comma-separated, default: localhost:3000)
+
+────────────────────────────────────────────────────────────────
+SECTION 9: RUNNING TESTS
+────────────────────────────────────────────────────────────────
+# Run all tests
+npm test
+
+# Run with coverage report
+npm run test:coverage
+
+# Run a specific test file
+npx jest tests/services/quizScoring.test.js
+
+# Watch mode during development
+npm run test:watch
+
+Test files location: tests/
+  utils/          → apiResponse, AppError
+  middleware/     → authorize (RBAC)
+  services/       → auth, quiz scoring, OTP
+  jobs/           → leaderboard date helpers
+
+All tests use Jest mocks — no MongoDB connection needed.
+
+════════════════════════════════════════════════════════════════
+TO USE THIS FILE: Read it at the start of any new session.
+Just say: "read the NOTES.txt and continue from where we left off"
+════════════════════════════════════════════════════════════════

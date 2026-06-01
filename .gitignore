@@ -6,3 +6,12 @@ logs/
 dist/
 coverage/
 .nyc_output/
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/*.tfvars
+terraform/riserank
+terraform/riserank.pub
+terraform/.terraform.lock.hcl

@@ -16,7 +16,7 @@ const updateProfile = Joi.object({
     .valid(...Object.values(LANGUAGES))
     .optional(),
   preferredExams: Joi.array()
-    .items(Joi.string().valid(...Object.values(EXAM_CATEGORIES)))
+    .items(Joi.string().trim().max(50))
     .optional(),
   state: Joi.string().trim().max(50).optional().allow('', null),
 });

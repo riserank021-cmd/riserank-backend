@@ -62,7 +62,8 @@ const userSchema = new mongoose.Schema(
     preferredExams: [
       {
         type: String,
-        enum: Object.values(EXAM_CATEGORIES),
+        trim: true,
+        maxlength: 50,
       },
     ],
 

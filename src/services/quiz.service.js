@@ -44,8 +44,12 @@ const getQuizById = async (id) => {
 const listQuizzes = async (query, isAdmin = false) => {
   const { page, limit, skip } = getPaginationParams(query);
   const filter = {};
-  if (!isAdmin) filter.status = CONTENT_STATUS.PUBLISHED;
-  else if (query.status) filter.status = query.status;
+  if (!isAdmin) {
+    filter.status = CONTENT_STATUS.PUBLISHED;
+    filter.isPractice = { $ne: true }; // Exclude user-generated practice sessions
+  } else if (query.status) {
+    filter.status = query.status;
+  }
   if (query.examCategory) filter.examCategory = query.examCategory;
   if (query.isDaily !== undefined) filter.isDaily = query.isDaily === 'true';
 

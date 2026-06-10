@@ -231,6 +231,35 @@ router.patch('/users/:id/suspend', authorize(...ALL_ADMINS), validate(validators
 
 /**
  * @openapi
+ * /admin/users/{id}/role:
+ *   patch:
+ *     tags: [Admin]
+ *     summary: Update a user's role (superadmin only)
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [role]
+ *             properties:
+ *               role:
+ *                 type: string
+ *                 enum: [user, admin, superadmin]
+ *     responses:
+ *       200:
+ *         description: Role updated
+ */
+router.patch('/users/:id/role', authorize(...SUPER_ADMIN), controller.updateUserRole);
+
+/**
+ * @openapi
  * /admin/users/{id}/unsuspend:
  *   patch:
  *     tags: [Admin]

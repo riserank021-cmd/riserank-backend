@@ -62,6 +62,9 @@ const env = {
 
   // Firebase FCM
   FIREBASE_SERVER_KEY: process.env.FIREBASE_SERVER_KEY || null,
+
+  // Google OAuth
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || null,
 };
 
 module.exports = env;

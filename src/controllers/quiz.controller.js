@@ -58,4 +58,27 @@ const getAttemptById = asyncHandler(async (req, res) => {
   return sendSuccess(res, { data: attempt });
 });
 
-module.exports = { create, update, remove, getById, list, getDaily, startAttempt, submitAttempt, getAttemptById, getAttemptHistory };
+// POST /quizzes/practice — generate on-demand practice quiz
+const generatePractice = asyncHandler(async (req, res) => {
+  const { examCategory, subject, topic, count } = req.body;
+  if (!examCategory) {
+    return res.status(400).json({ success: false, message: 'examCategory is required' });
+  }
+  const result = await quizService.generatePracticeQuiz({
+    examCategory,
+    subject,
+    topic,
+    count,
+    userId: req.user._id,
+  });
+  return sendSuccess(res, { data: result });
+});
+
+// GET /quizzes/subjects?examCategory=ssc — return subject/topic tree
+const getPracticeSubjects = asyncHandler(async (req, res) => {
+  const { examCategory } = req.query;
+  const data = quizService.getPracticeSubjects(examCategory ?? 'ssc');
+  return sendSuccess(res, { data });
+});
+
+module.exports = { create, update, remove, getById, list, getDaily, startAttempt, submitAttempt, getAttemptById, getAttemptHistory, generatePractice, getPracticeSubjects };

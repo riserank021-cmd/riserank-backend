@@ -10,6 +10,7 @@ const Session = require('../models/Session');
 const { generateTokenPair, verifyRefreshToken } = require('../utils/generateToken');
 const AppError = require('../utils/AppError');
 const { v4: uuidv4 } = require('uuid');
+const otpService = require('../services/otp.service');
 
 // ─────────────────────────────────────────────
 // HELPERS
@@ -36,6 +37,9 @@ const registerUser = async ({ name, email, password, phone, preferredLanguage, d
   if (existing) throw new AppError('Email already registered', 409);
 
   const user = await User.create({ name, email, password, phone, preferredLanguage });
+
+  // Send email verification OTP (fire-and-forget — don't block registration)
+  otpService.sendEmailVerificationOTP(user._id).catch(() => {});
 
   // Update streak on first login
   user.updateStreak();

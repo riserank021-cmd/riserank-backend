@@ -17,6 +17,7 @@ const analyticsRoutes = require('./analytics.routes');
 const uploadRoutes = require('./upload.routes');
 const notificationRoutes = require('./notification.routes');
 const importRoutes = require('./import.routes');
+const liveTestRoutes = require('./liveTest.routes');
 
 // ── Health check ──────────────────────────────────────────────────────────────
 router.get('/health', (req, res) => {
@@ -56,5 +57,6 @@ router.use('/analytics', analyticsRoutes);
 router.use('/upload', uploadRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/import', importRoutes);
+router.use('/live-tests', liveTestRoutes);
 
 module.exports = router;

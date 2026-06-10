@@ -217,10 +217,20 @@ const submitAttempt = async (quizId, userId, { answers, timeTakenSeconds, langua
 
 const getAttemptById = async (attemptId, userId) => {
   const attempt = await QuizAttempt.findOne({ _id: attemptId, user: userId, isCompleted: true })
-    .populate('quiz', 'title description examCategory isDaily durationMinutes totalMarks negativeMarking negativeMarkValue')
-    .populate('answers.question', 'text options correctOption explanation difficulty')
+    .populate('quiz', 'title description examCategory isDaily durationSeconds totalMarks negativeMarking negativeMarkValue')
+    .populate('answers.question', 'questionText options correctOption explanation difficulty subject topic')
     .lean();
   if (!attempt) throw new AppError('Attempt not found', 404);
+
+  // Compute All India Rank for this quiz attempt
+  const quizId = attempt.quiz?._id ?? attempt.quiz;
+  const [rank, totalAttempts] = await Promise.all([
+    QuizAttempt.countDocuments({ quiz: quizId, isCompleted: true, score: { $gt: attempt.score } }),
+    QuizAttempt.countDocuments({ quiz: quizId, isCompleted: true }),
+  ]);
+  attempt.rank = rank + 1;
+  attempt.totalAttempts = totalAttempts;
+
   return attempt;
 };
 
@@ -240,6 +250,95 @@ const getAttemptHistory = async (userId, query) => {
   return { items, pagination: buildPaginationMeta({ page, limit, total }) };
 };
 
+// ── Practice Quiz Generator ───────────────────────────────────────────────────
+
+const { PRACTICE_SUBJECTS } = require('../config/constants');
+
+/**
+ * Generate an on-demand practice quiz from the question bank.
+ * Creates a real Quiz document so it flows through the normal attempt pipeline.
+ *
+ * @param {Object} params
+ * @param {string} params.examCategory  - e.g. 'ssc'
+ * @param {string} params.subject       - e.g. 'english' | 'gk_gs'
+ * @param {string} [params.topic]       - e.g. 'history' (null = all topics in subject)
+ * @param {number} params.count         - number of questions (1–100)
+ * @param {string} params.userId        - user requesting the quiz
+ * @returns {{ quizId, attemptId, questionCount }}
+ */
+const generatePracticeQuiz = async ({ examCategory, subject, topic, count = 20, userId }) => {
+  const safeCount = Math.min(Math.max(parseInt(count, 10) || 20, 1), 100);
+
+  // Build question filter
+  const filter = {
+    examCategory,
+    status: CONTENT_STATUS.PUBLISHED,
+  };
+  if (subject) filter.subject = subject;
+  if (topic)   filter.topic   = topic;
+
+  // Pick random questions using $sample aggregation
+  const questions = await Question.aggregate([
+    { $match: filter },
+    { $sample: { size: safeCount } },
+    { $project: { _id: 1 } },
+  ]);
+
+  if (questions.length === 0) {
+    throw new AppError(
+      'No questions available for the selected topic yet. Please try another topic or check back later.',
+      404
+    );
+  }
+
+  const questionIds = questions.map((q) => q._id);
+
+  // Build a bilingual title
+  const subjectMeta = PRACTICE_SUBJECTS[examCategory]?.[subject];
+  const topicMeta = subjectMeta?.topics?.find((t) => t.value === topic);
+
+  const titleEn = topicMeta
+    ? `${topicMeta.label.en} Practice — ${questionIds.length} Questions`
+    : subjectMeta
+    ? `${subjectMeta.label.en} Practice — ${questionIds.length} Questions`
+    : `${examCategory.toUpperCase()} Practice — ${questionIds.length} Questions`;
+
+  const titleHi = topicMeta
+    ? `${topicMeta.label.hi} अभ्यास — ${questionIds.length} प्रश्न`
+    : subjectMeta
+    ? `${subjectMeta.label.hi} अभ्यास — ${questionIds.length} प्रश्न`
+    : `${examCategory.toUpperCase()} अभ्यास — ${questionIds.length} प्रश्न`;
+
+  // Duration: 90 seconds per question (minimum 5 min)
+  const durationSeconds = Math.max(questionIds.length * 90, 300);
+
+  // Create the quiz — use userId as createdBy (Mongoose ObjectId ref isn't enforced at DB level)
+  const quiz = await Quiz.create({
+    title:          { en: titleEn, hi: titleHi },
+    description:    { en: '', hi: '' },
+    examCategory,
+    questions:      questionIds,
+    durationSeconds,
+    status:         CONTENT_STATUS.PUBLISHED,
+    isPractice:     true,
+    practiceSubject: subject ?? null,
+    practiceTopic:  topic ?? null,
+    createdBy:      userId,
+  });
+
+  // Start attempt immediately
+  const { attempt } = await startAttempt(quiz._id.toString(), userId);
+
+  return { quizId: quiz._id, attemptId: attempt._id, questionCount: questionIds.length };
+};
+
+/**
+ * Return the practice subjects/topics config for a given exam category.
+ */
+const getPracticeSubjects = (examCategory) => {
+  return PRACTICE_SUBJECTS[examCategory] ?? {};
+};
+
 module.exports = {
   createQuiz,
   updateQuiz,
@@ -251,4 +350,6 @@ module.exports = {
   submitAttempt,
   getAttemptById,
   getAttemptHistory,
+  generatePracticeQuiz,
+  getPracticeSubjects,
 };

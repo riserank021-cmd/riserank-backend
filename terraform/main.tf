@@ -12,6 +12,13 @@ provider "aws" {
   region = var.aws_region
 }
 
+# ── Data: Default VPC ────────────────────────────────────────────────────────
+# If this fails with "no matching VPC", run:
+#   aws ec2 create-default-vpc --region ap-south-1
+data "aws_vpc" "default" {
+  default = true
+}
+
 # ── Data: Latest Ubuntu 22.04 LTS AMI ─────────────────────────────────────────
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -43,6 +50,7 @@ resource "aws_key_pair" "riserank" {
 resource "aws_security_group" "riserank" {
   name        = "${var.app_name}-sg"
   description = "RiseRank backend security group"
+  vpc_id      = data.aws_vpc.default.id
 
   # SSH — restrict to your IP in production
   ingress {

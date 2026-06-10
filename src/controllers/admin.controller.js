@@ -44,6 +44,11 @@ const deleteUser = asyncHandler(async (req, res) => {
   return sendSuccess(res, { message: 'User deleted' });
 });
 
+const updateUserRole = asyncHandler(async (req, res) => {
+  const user = await adminService.updateUserRole(req.params.id, req.body.role);
+  return sendSuccess(res, { message: `User role updated to ${user.role}`, data: { user } });
+});
+
 // ── Reports ───────────────────────────────────────────────────────────────────
 const listReports = asyncHandler(async (req, res) => {
   const result = await adminService.listReports(req.query);
@@ -67,7 +72,7 @@ const getAdminProfile = asyncHandler(async (req, res) => {
 
 module.exports = {
   createAdmin, deleteAdmin, listAdmins,
-  listUsers, getUserById, suspendUser, unsuspendUser, deleteUser,
+  listUsers, getUserById, suspendUser, unsuspendUser, deleteUser, updateUserRole,
   listReports, reviewReport,
   changeAdminPassword, getAdminProfile,
 };

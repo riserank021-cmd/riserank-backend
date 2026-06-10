@@ -99,6 +99,18 @@ const deleteUser = async (userId) => {
   if (!user) throw new AppError('User not found', 404);
 };
 
+const updateUserRole = async (userId, role) => {
+  const validRoles = [ROLES.USER, ROLES.ADMIN, ROLES.SUPER_ADMIN];
+  if (!validRoles.includes(role)) throw new AppError('Invalid role', 400);
+
+  const user = await User.findById(userId);
+  if (!user) throw new AppError('User not found', 404);
+
+  user.role = role;
+  await user.save({ validateBeforeSave: false });
+  return user;
+};
+
 // ── Reported Questions Management ─────────────────────────────────────────────
 
 const listReports = async (query) => {
@@ -157,7 +169,7 @@ const getAdminProfile = async (adminId) => {
 
 module.exports = {
   createAdmin, deleteAdmin, listAdmins,
-  listUsers, getUserById, suspendUser, unsuspendUser, deleteUser,
+  listUsers, getUserById, suspendUser, unsuspendUser, deleteUser, updateUserRole,
   listReports, reviewReport,
   changeAdminPassword, getAdminProfile,
 };

@@ -66,6 +66,14 @@ const quizSchema = new mongoose.Schema(
       default: null, // Set when isDaily = true
     },
 
+    // ── Practice Quiz (auto-generated on-demand) ──
+    isPractice: {
+      type: Boolean,
+      default: false,
+    },
+    practiceSubject: { type: String, default: null }, // e.g. 'english', 'gk_gs'
+    practiceTopic:   { type: String, default: null }, // e.g. 'history', 'synonyms' (null = all topics in subject)
+
     // ── Status ────────────────────────────────────
     status: {
       type: String,
@@ -94,6 +102,16 @@ const quizSchema = new mongoose.Schema(
     versionKey: false,
   }
 );
+
+// ── Virtual: durationMinutes ──────────────────────────────────────────────────
+// Convenience accessor consumed by the mobile app (durationSeconds is the source of truth)
+quizSchema.virtual('durationMinutes').get(function () {
+  return Math.round(this.durationSeconds / 60);
+});
+
+// Serialize virtuals so they appear in JSON API responses
+quizSchema.set('toJSON', { virtuals: true });
+quizSchema.set('toObject', { virtuals: true });
 
 // ── Indexes ───────────────────────────────────────────────────────────────────
 quizSchema.index({ status: 1, examCategory: 1 });

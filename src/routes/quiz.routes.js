@@ -41,6 +41,10 @@ const ADMIN_ROLES = [ROLES.ADMIN, ROLES.SUPER_ADMIN];
  */
 router.get('/daily', protect, controller.getDaily);
 
+// Practice quiz routes (must be before /:id to avoid collision)
+router.get('/subjects', protect, controller.getPracticeSubjects);
+router.post('/practice', protect, controller.generatePractice);
+
 /**
  * @openapi
  * /quizzes/history:

@@ -19,7 +19,7 @@ const consoleFormat = printf(({ level, message, timestamp: ts, stack }) => {
 // Daily rotate transport config factory
 const makeRotateTransport = (level, filename) =>
   new DailyRotateFile({
-    filename: path.join(env.LOG_DIR, `${filename}-%DATE%.log`),
+    filename: path.join(env.LOG_DIR || 'logs', `${filename}-%DATE%.log`),
     datePattern: 'YYYY-MM-DD',
     zippedArchive: true,
     maxSize: '20m',

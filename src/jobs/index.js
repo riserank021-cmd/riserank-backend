@@ -10,6 +10,7 @@
  *  23:55  — Daily leaderboard rank computation
  *  23:57  — All-time leaderboard update
  *  23:58  — Weekly leaderboard (Sundays only)
+ *  * * * * — Live test status transitions (every minute)
  */
 
 const {
@@ -19,6 +20,7 @@ const {
 } = require('./leaderboard.cron');
 const { scheduleDailyQuizCheck } = require('./dailyQuiz.cron');
 const { scheduleStreakReminder } = require('./streakReminder.cron');
+const { scheduleLiveTestTransitions } = require('./liveTest.cron');
 const logger = require('../utils/logger');
 
 const initJobs = () => {
@@ -29,6 +31,7 @@ const initJobs = () => {
   scheduleDailyLeaderboard();     // 23:55 IST
   scheduleAllTimeLeaderboard();   // 23:57 IST
   scheduleWeeklyLeaderboard();    // 23:58 IST (Sundays)
+  scheduleLiveTestTransitions();  // every minute
 
   logger.info('All cron jobs registered ✅');
 };

@@ -23,7 +23,7 @@ const globalLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   handler: rateLimitHandler,
-  skip: (req) => env.isDevelopment && req.ip === '127.0.0.1', // Skip in local dev
+  skip: (req) => env.isDevelopment && ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(req.ip), // Skip in local dev
 });
 
 // ── Auth routes limiter (stricter) ───────────────────────────────────────────
@@ -39,6 +39,7 @@ const authLimiter = rateLimit({
       message: 'Too many auth attempts from this IP. Please try again in 15 minutes.',
     });
   },
+  skip: (req) => env.isDevelopment && ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(req.ip),
 });
 
 // ── Quiz submission limiter ───────────────────────────────────────────────────

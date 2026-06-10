@@ -18,6 +18,7 @@ const uploadRoutes = require('./upload.routes');
 const notificationRoutes = require('./notification.routes');
 const importRoutes = require('./import.routes');
 const liveTestRoutes = require('./liveTest.routes');
+const publicRoutes = require('./public.routes');
 
 // ── Health check ──────────────────────────────────────────────────────────────
 router.get('/health', (req, res) => {
@@ -58,5 +59,6 @@ router.use('/upload', uploadRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/import', importRoutes);
 router.use('/live-tests', liveTestRoutes);
+router.use('/public', publicRoutes);
 
 module.exports = router;

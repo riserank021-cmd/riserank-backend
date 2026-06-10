@@ -155,7 +155,7 @@ const templates = {
 
 // ── Send Function ─────────────────────────────────────────────────────────────
 
-const sendEmail = async ({ to, subject, html }) => {
+const sendEmail = async ({ to, subject, html, text }) => {
   if (!env.SMTP_USER || !env.SMTP_PASS) {
     logger.warn('SMTP not configured — skipping email send');
     return;
@@ -168,6 +168,8 @@ const sendEmail = async ({ to, subject, html }) => {
       to,
       subject,
       html,
+      // Plain-text fallback — reduces spam score for HTML-only emails
+      text: text ?? html.replace(/<[^>]+>/g, ' ').replace(/\s{2,}/g, ' ').trim(),
     });
     logger.info(`Email sent to ${to}: ${info.messageId}`);
   } catch (err) {
@@ -180,12 +182,14 @@ const sendEmail = async ({ to, subject, html }) => {
 
 const sendVerificationOTP = async (email, name, otp) => {
   const { subject, html } = templates.emailVerification(name, otp);
-  await sendEmail({ to: email, subject, html });
+  const text = `Hi ${name},\n\nYour RiseRank email verification code is: ${otp}\n\nThis code is valid for 10 minutes.\n\nIf you did not sign up for RiseRank, please ignore this email.\n\n— RiseRank Team`;
+  await sendEmail({ to: email, subject, html, text });
 };
 
 const sendForgotPasswordOTP = async (email, name, otp) => {
   const { subject, html } = templates.forgotPassword(name, otp);
-  await sendEmail({ to: email, subject, html });
+  const text = `Hi ${name},\n\nYour RiseRank password reset code is: ${otp}\n\nThis code is valid for 10 minutes.\n\nIf you did not request a password reset, please ignore this email.\n\n— RiseRank Team`;
+  await sendEmail({ to: email, subject, html, text });
 };
 
 const sendPasswordChangedAlert = async (email, name) => {

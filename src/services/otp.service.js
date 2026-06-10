@@ -39,7 +39,7 @@ const sendEmailVerificationOTP = async (userId) => {
 
 // ── Verify email OTP ──────────────────────────────────────────────────────────
 const verifyEmailOTP = async (userId, otpInput) => {
-  const user = await User.findById(userId).select('+otp');
+  const user = await User.findById(userId).select('+otp.code +otp.purpose +otp.expiresAt');
   if (!user) throw new AppError('User not found', 404);
 
   if (!user.otp?.code || user.otp.purpose !== 'email_verification') {

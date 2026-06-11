@@ -29,9 +29,10 @@ const sendEmailVerificationOTP = async (userId) => {
   const hashedOtp = await bcrypt.hash(otp, 10);
   const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
-  await User.findByIdAndUpdate(userId, {
-    otp: { code: hashedOtp, purpose: 'email_verification', expiresAt },
-  });
+  await User.updateOne(
+    { _id: userId },
+    { $set: { 'otp.code': hashedOtp, 'otp.purpose': 'email_verification', 'otp.expiresAt': expiresAt } }
+  );
 
   await emailService.sendVerificationOTP(user.email, user.name, otp);
   return { message: `OTP sent to ${user.email}` };
@@ -70,9 +71,11 @@ const sendForgotPasswordOTP = async (email) => {
   const hashedOtp = await bcrypt.hash(otp, 10);
   const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
-  await User.findByIdAndUpdate(user._id, {
-    otp: { code: hashedOtp, purpose: 'password_reset', expiresAt },
-  });
+  // Use $set with explicit dotted paths — avoids Mongoose nested select:false write quirks
+  await User.updateOne(
+    { _id: user._id },
+    { $set: { 'otp.code': hashedOtp, 'otp.purpose': 'password_reset', 'otp.expiresAt': expiresAt } }
+  );
 
   await emailService.sendForgotPasswordOTP(user.email, user.name, otp);
   return { message: 'If this email is registered, an OTP has been sent.' };
@@ -80,6 +83,7 @@ const sendForgotPasswordOTP = async (email) => {
 
 // ── Reset password with OTP ───────────────────────────────────────────────────
 const resetPassword = async (email, otpInput, newPassword) => {
+  const cleanOtp = String(otpInput).trim(); // strip accidental whitespace
   const user = await User.findOne({ email: email.toLowerCase() }).select('+otp.code +otp.purpose +otp.expiresAt +password');
   if (!user) throw new AppError('Invalid request', 400);
 
@@ -90,7 +94,7 @@ const resetPassword = async (email, otpInput, newPassword) => {
     throw new AppError('OTP has expired. Please request a new one.', 400);
   }
 
-  const isValid = await bcrypt.compare(otpInput, user.otp.code);
+  const isValid = await bcrypt.compare(cleanOtp, user.otp.code);
   if (!isValid) throw new AppError('Invalid OTP', 400);
 
   user.password = newPassword;

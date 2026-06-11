@@ -1,25 +1,19 @@
 /**
  * email.service.js
- * Nodemailer email service with HTML templates.
- * Uses Gmail SMTP (free). For higher volume, swap to AWS SES.
+ * Resend transactional email service.
+ * Resend handles SPF/DKIM automatically — much better deliverability than Gmail SMTP.
+ * Free tier: 3,000 emails/month, 100/day.
  */
 
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const env = require('../config/env');
 const logger = require('./logger');
 
-// ── Transport ─────────────────────────────────────────────────────────────────
-const createTransport = () => {
-  return nodemailer.createTransport({
-    host: env.SMTP_HOST,
-    port: env.SMTP_PORT,
-    secure: env.SMTP_PORT === 465, // true for 465, false for 587
-    auth: {
-      user: env.SMTP_USER,
-      pass: env.SMTP_PASS,
-    },
-  });
-};
+// ── Resend client ─────────────────────────────────────────────────────────────
+const getResend = () => new Resend(env.RESEND_API_KEY);
+
+// Sender address — use verified domain in production, fallback for testing
+const FROM_ADDRESS = env.RESEND_FROM || 'RiseRank <onboarding@resend.dev>';
 
 // ── Base HTML template ────────────────────────────────────────────────────────
 const baseTemplate = (content) => `
@@ -156,22 +150,22 @@ const templates = {
 // ── Send Function ─────────────────────────────────────────────────────────────
 
 const sendEmail = async ({ to, subject, html, text }) => {
-  if (!env.SMTP_USER || !env.SMTP_PASS) {
-    logger.warn('SMTP not configured — skipping email send');
+  if (!env.RESEND_API_KEY) {
+    logger.warn('RESEND_API_KEY not configured — skipping email send');
     return;
   }
 
   try {
-    const transporter = createTransport();
-    const info = await transporter.sendMail({
-      from: `"RiseRank" <${env.SMTP_USER}>`,
-      to,
+    const resend = getResend();
+    const { data, error } = await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: Array.isArray(to) ? to : [to],
       subject,
       html,
-      // Plain-text fallback — reduces spam score for HTML-only emails
       text: text ?? html.replace(/<[^>]+>/g, ' ').replace(/\s{2,}/g, ' ').trim(),
     });
-    logger.info(`Email sent to ${to}: ${info.messageId}`);
+    if (error) throw new Error(error.message);
+    logger.info(`Email sent to ${to}: ${data.id}`);
   } catch (err) {
     logger.error(`Email send failed to ${to}: ${err.message}`);
     // Don't throw — email failure should never break auth flow

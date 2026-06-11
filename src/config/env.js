@@ -48,7 +48,11 @@ const env = {
   LOG_LEVEL: process.env.LOG_LEVEL || 'info',
   LOG_DIR: process.env.LOG_DIR || 'logs',
 
-  // Email (SMTP)
+  // Email (Resend — https://resend.com, free 3k/month)
+  RESEND_API_KEY: process.env.RESEND_API_KEY || null,
+  RESEND_FROM:    process.env.RESEND_FROM    || 'RiseRank <onboarding@resend.dev>',
+
+  // Legacy SMTP (no longer used)
   SMTP_HOST: process.env.SMTP_HOST || 'smtp.gmail.com',
   SMTP_PORT: parseInt(process.env.SMTP_PORT, 10) || 587,
   SMTP_USER: process.env.SMTP_USER || null,

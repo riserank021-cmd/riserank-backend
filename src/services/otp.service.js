@@ -80,7 +80,7 @@ const sendForgotPasswordOTP = async (email) => {
 
 // ── Reset password with OTP ───────────────────────────────────────────────────
 const resetPassword = async (email, otpInput, newPassword) => {
-  const user = await User.findOne({ email: email.toLowerCase() }).select('+otp +password');
+  const user = await User.findOne({ email: email.toLowerCase() }).select('+otp.code +otp.purpose +otp.expiresAt +password');
   if (!user) throw new AppError('Invalid request', 400);
 
   if (!user.otp?.code || user.otp.purpose !== 'password_reset') {

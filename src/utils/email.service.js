@@ -1,19 +1,25 @@
 /**
  * email.service.js
- * Resend transactional email service.
- * Resend handles SPF/DKIM automatically — much better deliverability than Gmail SMTP.
- * Free tier: 3,000 emails/month, 100/day.
+ * Dual-transport email service.
+ * - Primary:  Resend (set RESEND_API_KEY) — proper DKIM, lands in inbox
+ * - Fallback: Gmail SMTP (SMTP_USER + SMTP_PASS) — works but may hit spam
  */
 
 const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 const env = require('../config/env');
 const logger = require('./logger');
 
 // ── Resend client ─────────────────────────────────────────────────────────────
-const getResend = () => new Resend(env.RESEND_API_KEY);
-
-// Sender address — use verified domain in production, fallback for testing
 const FROM_ADDRESS = env.RESEND_FROM || 'RiseRank <onboarding@resend.dev>';
+
+// ── Gmail SMTP fallback ───────────────────────────────────────────────────────
+const createSmtpTransport = () => nodemailer.createTransport({
+  host: env.SMTP_HOST || 'smtp.gmail.com',
+  port: env.SMTP_PORT || 587,
+  secure: (env.SMTP_PORT || 587) === 465,
+  auth: { user: env.SMTP_USER, pass: env.SMTP_PASS },
+});
 
 // ── Base HTML template ────────────────────────────────────────────────────────
 const baseTemplate = (content) => `
@@ -150,26 +156,41 @@ const templates = {
 // ── Send Function ─────────────────────────────────────────────────────────────
 
 const sendEmail = async ({ to, subject, html, text }) => {
-  if (!env.RESEND_API_KEY) {
-    logger.warn('RESEND_API_KEY not configured — skipping email send');
-    return;
+  const plainText = text ?? html.replace(/<[^>]+>/g, ' ').replace(/\s{2,}/g, ' ').trim();
+
+  // ── Try Resend first (better deliverability) ──────────────────────────────
+  if (env.RESEND_API_KEY) {
+    try {
+      const resend = new Resend(env.RESEND_API_KEY);
+      const { data, error } = await resend.emails.send({
+        from: FROM_ADDRESS,
+        to: Array.isArray(to) ? to : [to],
+        subject, html, text: plainText,
+      });
+      if (error) throw new Error(error.message);
+      logger.info(`[Resend] Email sent to ${to}: ${data.id}`);
+      return;
+    } catch (err) {
+      logger.error(`[Resend] Failed, falling back to SMTP: ${err.message}`);
+    }
   }
 
-  try {
-    const resend = getResend();
-    const { data, error } = await resend.emails.send({
-      from: FROM_ADDRESS,
-      to: Array.isArray(to) ? to : [to],
-      subject,
-      html,
-      text: text ?? html.replace(/<[^>]+>/g, ' ').replace(/\s{2,}/g, ' ').trim(),
-    });
-    if (error) throw new Error(error.message);
-    logger.info(`Email sent to ${to}: ${data.id}`);
-  } catch (err) {
-    logger.error(`Email send failed to ${to}: ${err.message}`);
-    // Don't throw — email failure should never break auth flow
+  // ── Fall back to Gmail SMTP ───────────────────────────────────────────────
+  if (env.SMTP_USER && env.SMTP_PASS) {
+    try {
+      const transporter = createSmtpTransport();
+      const info = await transporter.sendMail({
+        from: `"RiseRank" <${env.SMTP_USER}>`,
+        to, subject, html, text: plainText,
+      });
+      logger.info(`[SMTP] Email sent to ${to}: ${info.messageId}`);
+      return;
+    } catch (err) {
+      logger.error(`[SMTP] Email send failed to ${to}: ${err.message}`);
+    }
   }
+
+  logger.warn(`No email transport configured — skipping send to ${to}`);
 };
 
 // ── Convenience methods ───────────────────────────────────────────────────────

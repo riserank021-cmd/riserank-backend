@@ -69,7 +69,7 @@ const articles = [
 ];
 
 (async () => {
-  const login = await post('/api/v1/auth/login', { email: 'superadmin@riserank.in', password: 'RiseRank@2024' });
+  const login = await post('/api/v1/auth/admin/login', { email: 'superadmin@riserank.in', password: 'RiseRank@2024' });
   const token = login.data && login.data.token;
   if (!token) { console.error('Login failed:', JSON.stringify(login)); process.exit(1); }
   console.log('Login OK');

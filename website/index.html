@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RiseRank – India's Best Exam Preparation App | SSC, Railway, Banking, Bihar SI</title>
+<meta name="description" content="Prepare for SSC, Railway, Banking & Bihar SI exams with RiseRank. Daily quizzes, current affairs, leaderboard & more. Download the free app now."/>
+<meta property="og:title" content="RiseRank – Crack Your Government Exam"/>
+<meta property="og:description" content="Daily quizzes, current affairs & leaderboard for SSC, Railway, Banking & Bihar SI. Free app – Download now."/>
+<meta property="og:image" content="https://riserank.in/og-image.png"/>
+<link rel="icon" type="image/png" href="favicon.png"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#1E3A8A;
+  --primary-dark:#1D4ED8;
+  --primary-light:#EFF6FF;
+  --orange:#F97316;
+  --orange-light:#FFF7ED;
+  --teal:#0D9488;
+  --teal-light:#F0FDFA;
+  --text:#0F172A;
+  --text-muted:#64748B;
+  --border:#E2E8F0;
+  --white:#FFFFFF;
+  --bg:#F8FAFC;
+  --green:#16A34A;
+  --red:#DC2626;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--text);background:var(--white)}
+a{text-decoration:none;color:inherit}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes slideLeft{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.animate-fade-up{animation:fadeInUp .6s ease both}
+.animate-fade{animation:fadeIn .5s ease both}
+.delay-1{animation-delay:.1s}
+.delay-2{animation-delay:.2s}
+.delay-3{animation-delay:.3s}
+.delay-4{animation-delay:.4s}
+
+/* ── TICKER ── */
+.ticker{background:var(--orange);padding:8px 0;overflow:hidden}
+.ticker-inner{display:flex;align-items:center;white-space:nowrap}
+.ticker-label{background:var(--primary);color:#fff;padding:4px 16px;font-size:12px;font-weight:700;flex-shrink:0;margin-right:16px}
+.ticker-track{display:flex;gap:48px;animation:scroll 40s linear infinite}
+.ticker-track span{font-size:13px;color:#fff;font-weight:500}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 5%}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1200px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:var(--primary)}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px}
+.logo-dot{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:14px;font-weight:500;color:var(--text-muted);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--primary)}
+.nav-cta{display:flex;align-items:center;gap:10px}
+.btn-outline{padding:8px 18px;border:1.5px solid var(--primary);border-radius:8px;font-size:14px;font-weight:600;color:var(--primary);cursor:pointer;transition:all .2s}
+.btn-outline:hover{background:var(--primary-light)}
+.btn-primary{padding:8px 18px;background:var(--orange);border:none;border-radius:8px;font-size:14px;font-weight:600;color:#fff;cursor:pointer;transition:all .2s}
+.btn-primary:hover{background:#ea6c0a}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#0f2460 0%,#1E3A8A 50%,#1a4fc4 100%);padding:80px 5% 0;overflow:hidden;position:relative}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(249,115,22,.12) 0%,transparent 60%);pointer-events:none}
+.hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:13px;color:#fff;margin-bottom:20px}
+.hero-tag span{width:8px;height:8px;background:var(--orange);border-radius:50%;display:inline-block;animation:pulse 2s infinite}
+.hero h1{font-size:46px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:16px}
+.hero h1 em{color:var(--orange);font-style:normal}
+.hero p{font-size:17px;color:rgba(255,255,255,.82);margin-bottom:32px;line-height:1.75}
+.hero-btns{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.btn-hero-primary{padding:14px 28px;background:var(--orange);border-radius:10px;font-size:15px;font-weight:700;color:#fff;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 14px rgba(249,115,22,.4)}
+.btn-hero-primary:hover{background:#ea6c0a;transform:translateY(-2px);box-shadow:0 6px 20px rgba(249,115,22,.5)}
+.btn-hero-secondary{padding:13px 26px;border:2px solid rgba(255,255,255,.4);border-radius:10px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;transition:all .2s}
+.btn-hero-secondary:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+.store-badges{display:flex;align-items:center;gap:10px;margin-top:20px;flex-wrap:wrap}
+.badge{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px 16px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.badge:hover{background:rgba(255,255,255,.22);transform:translateY(-1px)}
+.badge svg{width:20px;height:20px}
+.hero-img{position:relative;display:flex;justify-content:center;padding-bottom:0}
+.phone-mockup{width:260px;background:var(--white);border-radius:36px;box-shadow:0 48px 80px rgba(0,0,0,.5);overflow:hidden;border:8px solid #1a2f6a}
+.phone-screen{background:var(--bg);padding:16px}
+.hero-floating-card{position:absolute;background:#fff;border-radius:12px;padding:10px 14px;box-shadow:0 8px 24px rgba(0,0,0,.18);animation:fadeInUp .6s ease both}
+.hero-floating-card.rank{right:-20px;top:30%;display:flex;align-items:center;gap:8px}
+.hero-floating-card.streak{left:-20px;bottom:30%;display:flex;align-items:center;gap:8px}
+.hero-stats{background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.hero-stat{text-align:center}
+.hero-stat strong{display:block;font-size:20px;font-weight:800;color:#fff}
+.hero-stat span{font-size:11px;color:rgba(255,255,255,.65)}
+
+/* ── STATS BANNER ── */
+.stats-banner{background:var(--primary);padding:28px 5%}
+.stats-banner-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-around;flex-wrap:wrap;gap:20px}
+.stat-item{text-align:center;color:#fff}
+.stat-item strong{display:block;font-size:28px;font-weight:800;color:var(--orange)}
+.stat-item span{font-size:13px;color:rgba(255,255,255,.8)}
+
+/* ── SECTIONS ── */
+section{padding:72px 5%}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-tag{display:inline-block;background:var(--primary-light);color:var(--primary);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px;text-transform:uppercase}
+.section-title{font-size:34px;font-weight:800;color:var(--text);margin-bottom:10px;line-height:1.2}
+.section-sub{font-size:16px;color:var(--text-muted);margin-bottom:40px;max-width:600px}
+
+/* ── INTERACTIVE QUIZ DEMO ── */
+.demo{background:linear-gradient(135deg,var(--teal-light) 0%,#e0f2fe 100%);border-top:1px solid #d1fae5;border-bottom:1px solid #bae6fd}
+.demo-wrap{max-width:740px;margin:0 auto}
+.demo-header{text-align:center;margin-bottom:32px}
+.demo-header .section-tag{background:#d1fae5;color:var(--teal)}
+.quiz-shell{background:#fff;border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,.1);overflow:hidden;border:1.5px solid #e0f2fe}
+.quiz-topbar{background:var(--primary);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.quiz-topbar-title{color:#fff;font-size:14px;font-weight:700}
+.quiz-timer{background:rgba(255,255,255,.15);border-radius:20px;padding:4px 14px;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px}
+.quiz-progress{height:4px;background:rgba(255,255,255,.2)}
+.quiz-progress-fill{height:100%;background:var(--orange);transition:width .4s ease}
+.quiz-body{padding:28px 24px}
+.quiz-q-num{font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.quiz-q-text{font-size:17px;font-weight:600;color:var(--text);line-height:1.6;margin-bottom:24px}
+.quiz-options{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{display:flex;align-items:center;gap:14px;border:2px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;background:#fff;text-align:left;width:100%}
+.quiz-opt:hover:not(.locked){border-color:var(--primary-dark);background:var(--primary-light)}
+.quiz-opt.selected{border-color:var(--primary-dark);background:var(--primary-light)}
+.quiz-opt.correct{border-color:var(--green);background:#f0fdf4}
+.quiz-opt.wrong{border-color:var(--red);background:#fef2f2}
+.quiz-opt.missed{border-color:var(--green);background:#f0fdf4;opacity:.75}
+.quiz-opt-badge{width:32px;height:32px;border-radius:50%;background:var(--bg);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text-muted);flex-shrink:0;transition:all .2s}
+.quiz-opt.selected .quiz-opt-badge{background:var(--primary);border-color:var(--primary);color:#fff}
+.quiz-opt.correct .quiz-opt-badge{background:var(--green);border-color:var(--green);color:#fff}
+.quiz-opt.wrong .quiz-opt-badge{background:var(--red);border-color:var(--red);color:#fff}
+.quiz-opt.missed .quiz-opt-badge{background:var(--green);border-color:var(--green);color:#fff}
+.quiz-opt-text{font-size:15px;color:var(--text);font-weight:500}
+.quiz-opt.correct .quiz-opt-text,.quiz-opt.missed .quiz-opt-text{font-weight:600;color:#15803d}
+.quiz-opt.wrong .quiz-opt-text{color:#b91c1c}
+.quiz-explanation{margin-top:16px;background:var(--primary-light);border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 16px}
+.quiz-explanation-label{font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.quiz-explanation-text{font-size:14px;color:#1e40af;line-height:1.65}
+.quiz-footer{padding:16px 24px 24px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--border);margin-top:16px}
+.btn-next{padding:11px 28px;background:var(--primary);border-radius:10px;font-size:14px;font-weight:700;color:#fff;border:none;cursor:pointer;transition:all .2s}
+.btn-next:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.btn-next:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* Result panel */
+.quiz-result-panel{padding:28px 24px;text-align:center;animation:fadeInUp .5s ease}
+.result-motivational{background:var(--teal);color:#fff;font-size:15px;font-weight:700;padding:12px 20px;border-radius:10px;margin-bottom:20px}
+.result-score-big{font-size:52px;font-weight:800;color:var(--primary);line-height:1}
+.result-score-label{font-size:14px;color:var(--text-muted);margin-top:4px;margin-bottom:20px}
+.result-rank{background:var(--primary-light);border:1.5px solid #bfdbfe;border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin:0 auto 20px;max-width:320px;text-align:left}
+.result-rank-num{font-size:28px;font-weight:800;color:var(--primary)}
+.result-rank-detail{font-size:12px;color:var(--text-muted);margin-top:2px}
+.result-stats{display:flex;justify-content:center;gap:16px;margin-bottom:20px}
+.result-stat{text-align:center;background:var(--bg);border-radius:10px;padding:12px 20px;min-width:80px}
+.result-stat-num{font-size:22px;font-weight:800}
+.result-stat-label{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;margin-top:2px}
+.result-palette{display:flex;justify-content:center;gap:8px;margin-bottom:24px}
+.palette-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
+.palette-dot.correct{background:var(--green)}
+.palette-dot.wrong{background:var(--red)}
+.palette-dot.skipped{background:#94a3b8}
+.btn-cta-orange{padding:13px 32px;background:var(--orange);border-radius:10px;font-size:15px;font-weight:700;color:#fff;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 14px rgba(249,115,22,.35);display:inline-block}
+.btn-cta-orange:hover{background:#ea6c0a;transform:translateY(-2px);box-shadow:0 6px 20px rgba(249,115,22,.45)}
+.demo-note{text-align:center;margin-top:16px;font-size:13px;color:var(--text-muted)}
+
+/* ── EXAMS ── */
+.exams{background:var(--white)}
+.exam-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.exam-tab{padding:8px 18px;border-radius:8px;font-size:14px;font-weight:600;border:1.5px solid var(--border);color:var(--text-muted);cursor:pointer;transition:all .2s;background:#fff}
+.exam-tab.active,.exam-tab:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.exam-card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:20px 16px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.exam-card:hover{border-color:var(--primary);box-shadow:0 4px 20px rgba(30,58,138,.1);transform:translateY(-2px)}
+.exam-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.exam-name{font-size:15px;font-weight:700;color:var(--text)}
+.exam-count{font-size:12px;color:var(--text-muted)}
+.exam-arrow{margin-top:auto;color:var(--primary);font-size:18px}
+
+/* ── FEATURES ── */
+.features{background:var(--bg)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
+.feature-card{background:var(--white);border-radius:16px;padding:28px 24px;border:1.5px solid var(--border);transition:all .25s}
+.feature-card:hover{border-color:var(--primary);box-shadow:0 8px 30px rgba(30,58,138,.1);transform:translateY(-2px)}
+.feature-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px}
+.feature-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px}
+.feature-desc{font-size:14px;color:var(--text-muted);line-height:1.7}
+
+/* ── HOW IT WORKS ── */
+.how{background:var(--white)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;position:relative}
+.steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:2px;background:linear-gradient(90deg,var(--primary),var(--orange));z-index:0}
+.step{text-align:center;position:relative;z-index:1}
+.step-num{width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:4px solid #fff;box-shadow:0 0 0 2px var(--primary)}
+.step-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.step-desc{font-size:13px;color:var(--text-muted);line-height:1.6}
+
+/* ── LEADERBOARD PREVIEW ── */
+.leaderboard-section{background:linear-gradient(135deg,var(--primary) 0%,#1a4fc4 100%);padding:72px 5%}
+.lb-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.lb-text .section-tag{background:rgba(255,255,255,.2);color:#fff}
+.lb-text .section-title{color:#fff}
+.lb-text .section-sub{color:rgba(255,255,255,.75)}
+.lb-card{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:20px;overflow:hidden}
+.lb-card-header{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between}
+.lb-card-header span{color:#fff;font-size:14px;font-weight:700}
+.lb-badge{background:var(--orange);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.lb-row{padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06);transition:background .2s}
+.lb-row:hover{background:rgba(255,255,255,.05)}
+.lb-row.you{background:rgba(249,115,22,.15);border-left:3px solid var(--orange)}
+.lb-rank-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.lb-rank-1{background:#F59E0B;color:#fff}
+.lb-rank-2{background:#94A3B8;color:#fff}
+.lb-rank-3{background:#B45309;color:#fff}
+.lb-rank-other{background:rgba(255,255,255,.15);color:#fff}
+.lb-name{flex:1;font-size:13px;font-weight:600;color:#fff}
+.lb-score{font-size:13px;font-weight:700;color:rgba(255,255,255,.9)}
+.lb-delta{font-size:11px;color:#34d399;font-weight:700;margin-left:4px}
+.lb-you-tag{font-size:10px;background:var(--orange);color:#fff;padding:2px 7px;border-radius:10px;font-weight:700}
+.lb-features{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.lb-feat{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.85);font-size:14px}
+.lb-feat-icon{width:24px;height:24px;background:rgba(255,255,255,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+
+/* ── TOPICS ── */
+.topics{background:var(--bg)}
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.topic-chip{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.topic-chip:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+.topic-chip span{font-size:16px}
+
+/* ── WHY RISERANK ── */
+.why{background:var(--white)}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.why-card{text-align:center;padding:32px 20px;border-radius:16px;background:var(--bg);border:1.5px solid var(--border);transition:all .25s}
+.why-card:hover{background:var(--primary-light);border-color:var(--primary);transform:translateY(-2px)}
+.why-icon{font-size:36px;margin-bottom:12px}
+.why-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.why-desc{font-size:13px;color:var(--text-muted);line-height:1.6}
+
+/* ── TESTIMONIALS ── */
+.testimonials{background:var(--bg)}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.testi-card{background:var(--white);border-radius:16px;padding:24px;border:1.5px solid var(--border);transition:all .2s}
+.testi-card:hover{box-shadow:0 8px 24px rgba(30,58,138,.08);transform:translateY(-2px)}
+.testi-stars{color:var(--orange);font-size:14px;margin-bottom:10px}
+.testi-text{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:16px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+.testi-name{font-size:14px;font-weight:700;color:var(--text)}
+.testi-exam{font-size:12px;color:var(--text-muted)}
+
+/* ── DOWNLOAD ── */
+.download{background:linear-gradient(135deg,var(--primary) 0%,#1a4fc4 100%);padding:80px 5%}
+.download-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.download h2{font-size:38px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:16px}
+.download h2 em{color:var(--orange);font-style:normal}
+.download p{font-size:16px;color:rgba(255,255,255,.8);margin-bottom:32px;line-height:1.7}
+.download-badges{display:flex;gap:12px;flex-wrap:wrap}
+.download-badge{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.3);border-radius:12px;padding:10px 20px;color:#fff;cursor:pointer;transition:all .2s}
+.download-badge:hover{background:rgba(255,255,255,.22);transform:translateY(-1px)}
+.download-badge-text{display:flex;flex-direction:column}
+.download-badge-text small{font-size:11px;opacity:.8}
+.download-badge-text strong{font-size:15px;font-weight:700}
+.download-badge svg{width:24px;height:24px}
+.download-features{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.dl-feat{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.9);font-size:14px}
+.dl-feat::before{content:'✓';width:22px;height:22px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.app-preview{display:flex;justify-content:center;gap:20px;align-items:flex-end}
+.preview-phone{background:var(--white);border-radius:28px;padding:12px;box-shadow:0 30px 60px rgba(0,0,0,.35);border:6px solid #1a2f6a;width:200px}
+.preview-screen{background:var(--bg);border-radius:18px;overflow:hidden}
+.preview-header{background:var(--primary);padding:10px 12px;color:#fff;font-size:11px;font-weight:700}
+.preview-body{padding:10px}
+
+/* ── FAQ ── */
+.faq{background:var(--white)}
+.faq-list{max-width:800px;display:flex;flex-direction:column;gap:12px}
+.faq-item{border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
+.faq-q{padding:18px 20px;font-size:15px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.faq-q:hover{background:var(--bg)}
+.faq-q.open{background:var(--primary-light);color:var(--primary)}
+.faq-icon{font-size:18px;transition:transform .2s;flex-shrink:0}
+.faq-q.open .faq-icon{transform:rotate(45deg)}
+.faq-a{padding:0 20px;max-height:0;overflow:hidden;transition:all .3s;font-size:14px;color:var(--text-muted);line-height:1.7}
+.faq-a.open{padding:0 20px 18px;max-height:300px}
+
+/* ── FOOTER ── */
+footer{background:var(--primary);color:rgba(255,255,255,.85);padding:60px 5% 28px}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand .logo{color:#fff;font-size:22px;margin-bottom:12px}
+.footer-brand p{font-size:14px;line-height:1.7;color:rgba(255,255,255,.7);margin-bottom:20px}
+.footer-social{display:flex;gap:10px}
+.social-btn{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:all .2s;color:#fff}
+.social-btn:hover{background:var(--orange)}
+.footer-col h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:16px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.footer-col ul li a{font-size:13px;color:rgba(255,255,255,.65);transition:color .2s}
+.footer-col ul li a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.15);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:13px;color:rgba(255,255,255,.55)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.55);transition:color .2s}
+.footer-links a:hover{color:#fff}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero-inner,.download-inner,.lb-inner,.footer-top{grid-template-columns:1fr}
+  .hero-img,.app-preview{display:none}
+  .hero h1{font-size:32px}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .steps::before{display:none}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .lb-card{display:none}
+}
+@media(max-width:560px){
+  .hero h1{font-size:26px}
+  .section-title{font-size:24px}
+  .stats-banner-inner{gap:16px}
+  .footer-top{grid-template-columns:1fr}
+  .quiz-body{padding:20px 16px}
+  .result-stats{gap:8px}
+  .result-stat{padding:10px 12px;min-width:68px}
+}
+
+/* ── LIVE TEST SECTION ── */
+.live-test-section{background:linear-gradient(180deg,#f8fafc 0%,#eff6ff 100%);padding:80px 5%}
+.live-section-header{text-align:center;margin-bottom:56px}
+.live-badge-wrap{display:inline-flex;align-items:center;gap:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:20px;padding:5px 16px;margin-bottom:18px}
+.live-dot-pulse{width:10px;height:10px;background:#ef4444;border-radius:50%;animation:livePulse 1.5s ease-in-out infinite}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}50%{box-shadow:0 0 0 6px rgba(239,68,68,0)}}
+.live-badge-text{font-size:12px;font-weight:700;color:#ef4444;letter-spacing:.08em}
+.live-section-title{font-size:clamp(26px,4vw,38px);font-weight:800;color:var(--text);margin-bottom:14px;line-height:1.2}
+.live-section-title em{color:var(--primary-dark);font-style:normal}
+.live-section-sub{font-size:16px;color:var(--text-muted);max-width:560px;margin:0 auto;line-height:1.7}
+.live-cards-row{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:48px}
+.lt-card{background:#fff;border-radius:20px;padding:24px;border:1.5px solid var(--border);display:flex;flex-direction:column;gap:0;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s}
+.lt-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.1)}
+.lt-card-live{border-color:rgba(239,68,68,.4);background:linear-gradient(160deg,#fff 70%,#fff5f5)}
+.lt-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.lt-badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:12px;display:inline-flex;align-items:center;gap:5px}
+.lt-badge-upcoming{background:#eff6ff;color:#2563eb}
+.lt-badge-live{background:#fef2f2;color:#ef4444}
+.lt-badge-ended{background:#f0fdf4;color:#16a34a}
+.lt-live-dot{width:7px;height:7px;background:#ef4444;border-radius:50%;animation:livePulse 1.5s ease-in-out infinite;display:inline-block}
+.lt-category{font-size:11px;font-weight:600;color:var(--text-muted);background:var(--bg);padding:3px 10px;border-radius:20px}
+.lt-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.4}
+.lt-meta{font-size:12px;color:var(--text-muted);margin-bottom:16px}
+/* countdown */
+.lt-countdown{display:flex;align-items:center;gap:10px;justify-content:center;background:var(--primary-light);border-radius:14px;padding:16px;margin-bottom:16px}
+.lt-cd-block{display:flex;flex-direction:column;align-items:center;min-width:50px}
+.lt-cd-value{font-size:28px;font-weight:800;color:var(--primary-dark);line-height:1;font-variant-numeric:tabular-nums}
+.lt-cd-label{font-size:10px;color:var(--text-muted);font-weight:600;letter-spacing:.06em;margin-top:2px}
+.lt-cd-sep{font-size:24px;font-weight:800;color:var(--primary);opacity:.5;margin-bottom:12px}
+/* live bar */
+.lt-live-bar-wrap{height:8px;background:#fee2e2;border-radius:99px;overflow:hidden;margin-bottom:8px}
+.lt-live-bar{height:100%;background:linear-gradient(90deg,#ef4444,#f97316);border-radius:99px;width:63%;animation:liveBarAnim 2s ease-in-out infinite alternate}
+@keyframes liveBarAnim{from{opacity:.8}to{opacity:1}}
+.lt-live-bar-label{font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:8px}
+.lt-live-pulse-row{display:flex;align-items:center;gap:8px}
+.lt-live-dot-lg{width:10px;height:10px;background:#ef4444;border-radius:50%;display:inline-block;animation:livePulse 1.5s ease-in-out infinite}
+/* leaderboard */
+.lt-leaderboard{display:flex;flex-direction:column;gap:6px;margin-bottom:4px}
+.lt-lb-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;font-size:13px}
+.lt-lb-gold{background:linear-gradient(90deg,#fef9c3,#fef3c7)}
+.lt-lb-silver{background:#f8fafc}
+.lt-lb-bronze{background:#fff7ed}
+.lt-lb-rank{font-size:15px;flex-shrink:0}
+.lt-lb-name{flex:1;font-weight:600;color:var(--text)}
+.lt-lb-score{font-weight:700;color:var(--primary-dark);font-size:12px}
+.lt-lb-time{font-size:11px;color:var(--text-muted);min-width:50px;text-align:right}
+/* footer */
+.lt-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
+.lt-participants{font-size:12px;color:var(--text-muted)}
+.lt-join-btn{font-size:13px;font-weight:700;padding:8px 16px;border-radius:10px;transition:all .2s;white-space:nowrap}
+.lt-join-upcoming{background:var(--primary-light);color:var(--primary-dark)}
+.lt-join-upcoming:hover{background:#dbeafe}
+.lt-join-live{background:#ef4444;color:#fff}
+.lt-join-live:hover{background:#dc2626}
+.lt-join-ended{background:var(--bg);color:var(--text-muted);border:1px solid var(--border)}
+.lt-join-ended:hover{background:var(--border)}
+/* feature strip */
+.lt-features-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.lt-feat-item{display:flex;align-items:flex-start;gap:14px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px}
+.lt-feat-icon{font-size:24px;flex-shrink:0}
+.lt-feat-item strong{display:block;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.lt-feat-item p{font-size:12px;color:var(--text-muted);line-height:1.5}
+@media(max-width:900px){
+  .live-cards-row{grid-template-columns:1fr}
+  .lt-features-strip{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .lt-features-strip{grid-template-columns:1fr}
+  .live-test-section{padding:56px 5%}
+}
+
+/* ── PRACTICE SECTION ── */
+.practice-section{background:#fff;padding:80px 5%}
+.practice-header{text-align:center;margin-bottom:56px}
+.practice-title{font-size:clamp(26px,4vw,38px);font-weight:800;color:var(--text);margin-bottom:14px;line-height:1.2}
+.practice-title em{color:var(--primary-dark);font-style:normal}
+.practice-sub{font-size:16px;color:var(--text-muted);max-width:560px;margin:0 auto;line-height:1.7}
+.practice-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:32px;align-items:start}
+
+/* Exam tabs */
+.practice-exam-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.pt-btn{padding:7px 16px;border-radius:20px;border:1.5px solid var(--border);font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;background:#fff;transition:all .2s}
+.pt-btn:hover{border-color:var(--primary)}
+.pt-btn-active{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* Subject tree */
+.exam-subjects{display:none}
+.exam-subjects.active-exam{display:block}
+.coming-soon-msg{padding:32px;text-align:center;color:var(--text-muted);font-size:14px;border:1.5px dashed var(--border);border-radius:16px}
+.subject-block{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:10px}
+.subject-title{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;background:var(--bg);font-size:14px;font-weight:700;color:var(--text);user-select:none}
+.subject-title:hover{background:#e8edf4}
+.subject-arrow{font-size:11px;color:var(--text-muted);transition:transform .2s}
+.topic-list{display:none;padding:8px}
+.topic-list.show{display:block}
+.topic-item{padding:9px 12px;font-size:13px;color:var(--text-muted);border-radius:8px;cursor:pointer;transition:all .15s;font-weight:500}
+.topic-item:hover{background:var(--primary-light);color:var(--primary-dark)}
+.topic-item.selected{background:var(--primary-light);color:var(--primary-dark);font-weight:700}
+
+/* Config card */
+.practice-config-col{position:sticky;top:80px}
+.practice-card{background:#fff;border:1.5px solid var(--border);border-radius:24px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,.08)}
+.pc-topic-header{margin-bottom:20px}
+.pc-topic-badge{display:inline-block;background:var(--primary);color:#fff;font-size:13px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:6px}
+.pc-subject-label{font-size:12px;color:var(--text-muted)}
+.pc-stats-row{display:flex;gap:12px;margin-bottom:20px}
+.pc-stat{flex:1;background:var(--bg);border-radius:12px;padding:12px;text-align:center}
+.pc-stat-val{display:block;font-size:18px;font-weight:800;color:var(--primary-dark)}
+.pc-stat-label{font-size:11px;color:var(--text-muted);margin-top:2px;display:block}
+.pc-count-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px}
+.pc-preset-row{display:flex;gap:8px;margin-bottom:12px}
+.pc-preset{flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--border);font-size:14px;font-weight:700;cursor:pointer;background:#fff;color:var(--text);transition:all .2s}
+.pc-preset:hover{border-color:var(--primary);color:var(--primary-dark)}
+.pc-preset-active{background:var(--primary);border-color:var(--primary);color:#fff}
+.pc-custom-row{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.pc-custom-input{width:72px;padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-weight:700;text-align:center;outline:none}
+.pc-custom-input:focus{border-color:var(--primary)}
+.pc-duration-note{font-size:12px;color:var(--text-muted);margin-bottom:16px}
+.pc-start-btn{display:flex;align-items:center;justify-content:space-between;background:var(--primary);color:#fff;border-radius:14px;padding:14px 20px;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;text-decoration:none}
+.pc-start-btn:hover{background:var(--primary-dark)}
+.practice-tip{display:flex;align-items:flex-start;gap:12px;background:var(--orange-light);border:1px solid rgba(249,115,22,.2);border-radius:14px;padding:14px 16px;margin-top:16px}
+.practice-tip p{font-size:13px;color:#92400e;line-height:1.5}
+@media(max-width:900px){
+  .practice-layout{grid-template-columns:1fr}
+  .practice-config-col{position:static}
+}
+@media(max-width:480px){.practice-section{padding:56px 5%}}
+</style>
+</head>
+<body>
+
+<!-- ── TICKER ── -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-label">📢 Live Updates</div>
+    <div class="ticker-track">
+      <span>SSC CGL 2026 Notification Released — Apply by August 2026</span>
+      <span>RRB Group D 2026 Application Window Open Now</span>
+      <span>IBPS PO 2026 Notification Out — 4500+ Vacancies</span>
+      <span>Bihar SI 2026 Exam Date Announced — Prepare Now</span>
+      <span>Daily Quiz Updated — Attempt Today's Current Affairs Quiz</span>
+      <span>Current Affairs: June 2026 — Updated Daily on RiseRank</span>
+      <span>SBI Clerk 2026 Prelims Date Announced</span>
+      <span>SSC CGL 2026 Notification Released — Apply by August 2026</span>
+      <span>RRB Group D 2026 Application Window Open Now</span>
+      <span>IBPS PO 2026 Notification Out — 4500+ Vacancies</span>
+      <span>Bihar SI 2026 Exam Date Announced — Prepare Now</span>
+      <span>Daily Quiz Updated — Attempt Today's Current Affairs Quiz</span>
+      <span>Current Affairs: June 2026 — Updated Daily on RiseRank</span>
+      <span>SBI Clerk 2026 Prelims Date Announced</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <div class="logo-icon">R</div>
+      Rise<span class="logo-dot">Rank</span>
+    </a>
+    <div class="nav-links">
+      <a href="#exams" class="active">Exams</a>
+      <a href="#demo">Try Quiz</a>
+      <a href="#features">Features</a>
+      <a href="#practice">Practice</a>
+      <a href="#live-tests">Live Tests</a>
+      <a href="#leaderboard">Leaderboard</a>
+      <a href="#download">App</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#download" class="btn-outline">Download App</a>
+      <a href="#demo" class="btn-primary">Try a Quiz →</a>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="animate-fade-up">
+      <div class="hero-tag"><span></span> India's Fastest Growing Exam App</div>
+      <h1>One App for <em>Complete</em><br/>Exam Preparation</h1>
+      <p>Daily quizzes, bilingual current affairs, All India Rank & streak tracking — everything you need to crack SSC, Railway, Banking & Bihar SI.</p>
+      <div class="hero-btns">
+        <a href="#demo" class="btn-hero-primary">Try a Free Quiz</a>
+        <a href="#exams" class="btn-hero-secondary">Explore Exams →</a>
+      </div>
+      <div class="store-badges">
+        <a href="#download" class="badge">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.36.6 1.24 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/></svg>
+          Play Store
+        </a>
+        <a href="#download" class="badge">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/></svg>
+          App Store
+        </a>
+      </div>
+    </div>
+    <div class="hero-img animate-fade-up delay-2">
+      <div style="position:relative">
+        <div class="hero-floating-card rank delay-3">
+          <span style="font-size:20px">🏆</span>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--text)">Your Rank</div>
+            <div style="font-size:16px;font-weight:800;color:var(--primary)">#247 <span style="font-size:12px;color:var(--text-muted)">/ 8,420</span></div>
+          </div>
+        </div>
+        <div class="hero-floating-card streak delay-4">
+          <span style="font-size:20px">🔥</span>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--text)">Day Streak</div>
+            <div style="font-size:16px;font-weight:800;color:var(--orange)">14 days</div>
+          </div>
+        </div>
+        <div class="phone-mockup">
+          <div style="background:#1E3A8A;padding:10px 14px;color:#fff;font-size:11px;font-weight:700;display:flex;justify-content:space-between">
+            <span>🏠 RiseRank</span><span>🔔</span>
+          </div>
+          <div class="phone-screen">
+            <div style="background:linear-gradient(135deg,#1E3A8A,#1D4ED8);border-radius:12px;padding:12px;margin-bottom:10px;color:#fff">
+              <div style="font-size:10px;opacity:.8">Good Morning, Rajan 👋</div>
+              <div style="font-size:13px;font-weight:700;margin:3px 0">Today's Daily Quiz</div>
+              <div style="font-size:10px;opacity:.8">SSC General Knowledge · 20 Qs</div>
+              <div style="background:#F97316;border-radius:6px;padding:5px 10px;font-size:10px;font-weight:700;display:inline-block;margin-top:8px">Attempt Now →</div>
+            </div>
+            <div style="display:flex;gap:6px;margin-bottom:10px">
+              <div style="flex:1;background:#fff;border-radius:8px;padding:8px;border:1px solid #E2E8F0;text-align:center">
+                <div style="font-size:16px;font-weight:800;color:#F97316">🔥14</div>
+                <div style="font-size:9px;color:#64748B">Day Streak</div>
+              </div>
+              <div style="flex:1;background:#fff;border-radius:8px;padding:8px;border:1px solid #E2E8F0;text-align:center">
+                <div style="font-size:16px;font-weight:800;color:#1E3A8A">84%</div>
+                <div style="font-size:9px;color:#64748B">Accuracy</div>
+              </div>
+              <div style="flex:1;background:#fff;border-radius:8px;padding:8px;border:1px solid #E2E8F0;text-align:center">
+                <div style="font-size:16px;font-weight:800;color:#059669">#247</div>
+                <div style="font-size:9px;color:#64748B">Rank</div>
+              </div>
+            </div>
+            <div style="background:#fff;border-radius:10px;padding:12px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+              <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px">📰 Current Affairs</div>
+              <div style="font-size:10px;color:#64748B">DRDO sanctions ₹99.15L to Bharathiar University for...</div>
+              <div style="display:inline-block;background:#FFF7ED;color:#F97316;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;margin-top:4px">EN / HI</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong>1L+</strong><span>Registered Students</span></div>
+          <div class="hero-stat"><strong>10L+</strong><span>Quizzes Attempted</span></div>
+          <div class="hero-stat"><strong>5000+</strong><span>Questions Added</span></div>
+          <div class="hero-stat"><strong>4.8★</strong><span>App Rating</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS BANNER ── -->
+<div class="stats-banner">
+  <div class="stats-banner-inner">
+    <div class="stat-item"><strong id="stat-users">—</strong><span>Registered Students</span></div>
+    <div class="stat-item"><strong id="stat-attempts">—</strong><span>Quizzes Attempted</span></div>
+    <div class="stat-item"><strong id="stat-questions">—</strong><span>Practice Questions</span></div>
+    <div class="stat-item"><strong>Daily</strong><span>Current Affairs Updated</span></div>
+    <div class="stat-item"><strong>EN + HI</strong><span>Bilingual Content</span></div>
+  </div>
+</div>
+
+<!-- ── INTERACTIVE QUIZ DEMO ── -->
+<section class="demo" id="demo">
+  <div class="section-inner">
+    <div class="demo-header">
+      <div class="section-tag">Try It Now — Free</div>
+      <h2 class="section-title">Experience the RiseRank Quiz</h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center">3 sample questions. Instant explanations. See exactly what the app feels like.</p>
+    </div>
+    <div class="demo-wrap">
+      <div class="quiz-shell" id="quiz-shell">
+        <div class="quiz-topbar">
+          <span class="quiz-topbar-title">SSC CGL — General Knowledge</span>
+          <div class="quiz-timer">⏱ <span id="timer-display">03:00</span></div>
+        </div>
+        <div class="quiz-progress"><div class="quiz-progress-fill" id="quiz-progress" style="width:33%"></div></div>
+        <div id="quiz-content">
+          <!-- Question rendered by JS -->
+        </div>
+      </div>
+      <p class="demo-note">This is a 3-question preview. <a href="#download" style="color:var(--primary);font-weight:600">Download the app</a> for full daily quizzes with 20 questions, All India Rank &amp; explanations.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CURRENT AFFAIRS ── -->
+<section style="background:var(--bg);padding:72px 5%" id="current-affairs">
+  <div class="section-inner">
+    <div class="section-tag">Today's Current Affairs</div>
+    <h2 class="section-title">Stay Updated with Daily News</h2>
+    <p class="section-sub">The same current affairs from your app — exam-relevant, bilingual, updated every morning.</p>
+    <div id="ca-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:8px">
+      <!-- Filled by JS -->
+      <div class="ca-skeleton" style="height:140px;background:#e2e8f0;border-radius:14px;animation:pulse 1.5s infinite"></div>
+      <div class="ca-skeleton" style="height:140px;background:#e2e8f0;border-radius:14px;animation:pulse 1.5s infinite;animation-delay:.15s"></div>
+      <div class="ca-skeleton" style="height:140px;background:#e2e8f0;border-radius:14px;animation:pulse 1.5s infinite;animation-delay:.3s"></div>
+    </div>
+    <div style="text-align:center;margin-top:28px">
+      <a href="#download" class="btn-cta-orange">Read All in the App →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXAMS ── -->
+<section class="exams" id="exams">
+  <div class="section-inner">
+    <div class="section-tag">Popular Exams</div>
+    <h2 class="section-title">Prepare for India's Top Government Exams</h2>
+    <p class="section-sub">Get exam-ready with daily quizzes, current affairs and practice questions as per the latest 2026 exam pattern.</p>
+    <div class="exam-tabs">
+      <button class="exam-tab active" onclick="switchTab(this,'ssc')">SSC Exams</button>
+      <button class="exam-tab" onclick="switchTab(this,'railway')">Railway Exams</button>
+      <button class="exam-tab" onclick="switchTab(this,'banking')">Banking Exams</button>
+      <button class="exam-tab" onclick="switchTab(this,'police')">Bihar SI / Police</button>
+    </div>
+    <div class="exam-grid" id="exam-grid"></div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div class="section-inner">
+    <div class="section-tag">App Features</div>
+    <h2 class="section-title">Everything You Need to Crack Your Exam</h2>
+    <p class="section-sub">RiseRank is built specifically for government exam aspirants — not a generic quiz app.</p>
+    <div class="features-grid">
+      <div class="feature-card animate-fade-up">
+        <div class="feature-icon" style="background:#EFF6FF">📝</div>
+        <div class="feature-title">Daily Quiz</div>
+        <div class="feature-desc">Fresh MCQ quiz every day tailored to your exam. Detailed explanations with "In News" and "Key Points" after every question.</div>
+      </div>
+      <div class="feature-card animate-fade-up delay-1">
+        <div class="feature-icon" style="background:#FFF7ED">📰</div>
+        <div class="feature-title">Current Affairs</div>
+        <div class="feature-desc">Daily current affairs in English and Hindi. Topic-wise coverage with exam-relevant highlights — updated every morning.</div>
+      </div>
+      <div class="feature-card animate-fade-up delay-2">
+        <div class="feature-icon" style="background:#F0FDF4">🏆</div>
+        <div class="feature-title">All India Rank</div>
+        <div class="feature-desc">See your rank among all users who attempted the same quiz. Daily, weekly and all-time rankings to track your progress.</div>
+      </div>
+      <div class="feature-card animate-fade-up delay-3">
+        <div class="feature-icon" style="background:#FFF1F2">🔥</div>
+        <div class="feature-title">Streak Tracking</div>
+        <div class="feature-desc">Build a daily study habit with streak milestones. Celebrate 7, 30 and 100-day streaks with special badges.</div>
+      </div>
+      <div class="feature-card animate-fade-up">
+        <div class="feature-icon" style="background:#EFF6FF">💡</div>
+        <div class="feature-title">Smart Explanations</div>
+        <div class="feature-desc">Every question comes with a full explanation — correct answer highlighted, your wrong answer marked, and context provided.</div>
+      </div>
+      <div class="feature-card animate-fade-up delay-1">
+        <div class="feature-icon" style="background:#F0FDF4">📊</div>
+        <div class="feature-title">Performance Analytics</div>
+        <div class="feature-desc">Category-wise accuracy breakdown, quiz history and progress tracking to identify and fix weak areas fast.</div>
+      </div>
+      <div class="feature-card animate-fade-up delay-2">
+        <div class="feature-icon" style="background:#FFF7ED">🌐</div>
+        <div class="feature-title">Bilingual — EN & HI</div>
+        <div class="feature-desc">All questions and current affairs available in both English and Hindi. Switch languages instantly at any time.</div>
+      </div>
+      <div class="feature-card animate-fade-up delay-3">
+        <div class="feature-icon" style="background:#FFF1F2">📵</div>
+        <div class="feature-title">Offline Mode</div>
+        <div class="feature-desc">Quiz content cached automatically. Keep practicing even without internet — results sync when you reconnect.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how" id="how">
+  <div class="section-inner">
+    <div class="section-tag">How It Works</div>
+    <h2 class="section-title">Start Preparing in 4 Simple Steps</h2>
+    <p class="section-sub">No complicated setup. Be quiz-ready in under 2 minutes.</p>
+    <div class="steps">
+      <div class="step animate-fade-up">
+        <div class="step-num">1</div>
+        <div class="step-title">Download the App</div>
+        <div class="step-desc">Free on Play Store. Sign up with your email or Google account in seconds.</div>
+      </div>
+      <div class="step animate-fade-up delay-1">
+        <div class="step-num">2</div>
+        <div class="step-title">Select Your Exam</div>
+        <div class="step-desc">Choose SSC, Railway, Banking or Bihar SI. Your daily quiz is customised accordingly.</div>
+      </div>
+      <div class="step animate-fade-up delay-2">
+        <div class="step-num">3</div>
+        <div class="step-title">Attempt Daily Quiz</div>
+        <div class="step-desc">A fresh quiz every day. Review answers, read explanations and track your score.</div>
+      </div>
+      <div class="step animate-fade-up delay-3">
+        <div class="step-num">4</div>
+        <div class="step-title">See Your All India Rank</div>
+        <div class="step-desc">Score well, maintain your streak and climb the all-India ranking among lakhs of aspirants.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LEADERBOARD PREVIEW ── -->
+<div class="leaderboard-section" id="leaderboard">
+  <div class="lb-inner section-inner">
+    <div class="lb-text">
+      <div class="section-tag">All India Rank</div>
+      <h2 class="section-title">Compete with Lakhs of Aspirants</h2>
+      <p class="section-sub">After every quiz, RiseRank shows your All India Rank — not just a score. Know exactly where you stand against real competitors.</p>
+      <div class="lb-features">
+        <div class="lb-feat"><div class="lb-feat-icon">📅</div> Daily, weekly & all-time leaderboards</div>
+        <div class="lb-feat"><div class="lb-feat-icon">🏆</div> Rank shown instantly after quiz submission</div>
+        <div class="lb-feat"><div class="lb-feat-icon">📈</div> Track rank movement over time</div>
+        <div class="lb-feat"><div class="lb-feat-icon">🎯</div> State-wise filter — compete with your state</div>
+      </div>
+      <a href="#download" style="display:inline-block;margin-top:28px" class="btn-hero-primary">Download & Claim Your Rank</a>
+    </div>
+    <div class="lb-card">
+      <div class="lb-card-header">
+        <span>🏆 This Week's Leaderboard</span>
+        <div class="lb-badge">LIVE</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank-num lb-rank-1">1</div>
+        <div class="lb-name">Rahul S. <span style="font-size:16px">🥇</span></div>
+        <div class="lb-score">980 pts</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank-num lb-rank-2">2</div>
+        <div class="lb-name">Priya K. <span style="font-size:16px">🥈</span></div>
+        <div class="lb-score">945 pts</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank-num lb-rank-3">3</div>
+        <div class="lb-name">Amit R. <span style="font-size:16px">🥉</span></div>
+        <div class="lb-score">912 pts</div>
+      </div>
+      <div class="lb-row" style="opacity:.7">
+        <div class="lb-rank-num lb-rank-other">4</div>
+        <div class="lb-name">Sunita D.</div>
+        <div class="lb-score">887 pts</div>
+      </div>
+      <div class="lb-row" style="opacity:.5">
+        <div class="lb-rank-num lb-rank-other">5</div>
+        <div class="lb-name">Vikas Y.</div>
+        <div class="lb-score">864 pts</div>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,.15);margin:4px 0"></div>
+      <div class="lb-row you">
+        <div class="lb-rank-num lb-rank-other" style="background:var(--orange)">247</div>
+        <div class="lb-name">You 🎯 <span class="lb-you-tag">You</span></div>
+        <div class="lb-score">820 pts <span class="lb-delta">↑12</span></div>
+      </div>
+      <div style="padding:12px 20px;font-size:12px;color:rgba(255,255,255,.5);text-align:center">8,420 students this week</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOPICS ── -->
+<section class="topics" id="topics">
+  <div class="section-inner">
+    <div class="section-tag">Subject Topics</div>
+    <h2 class="section-title">Practice Questions Across All Key Subjects</h2>
+    <p class="section-sub">Our question bank covers every topic asked in SSC, Railway, Banking & Bihar SI exams.</p>
+    <div class="topics-grid">
+      <div class="topic-chip"><span>🧮</span> Mathematics</div>
+      <div class="topic-chip"><span>🔤</span> English Grammar</div>
+      <div class="topic-chip"><span>🌍</span> General Knowledge</div>
+      <div class="topic-chip"><span>🧠</span> Reasoning</div>
+      <div class="topic-chip"><span>💰</span> Economy</div>
+      <div class="topic-chip"><span>🏛️</span> Polity & Constitution</div>
+      <div class="topic-chip"><span>⚗️</span> Science & Technology</div>
+      <div class="topic-chip"><span>🗺️</span> Geography</div>
+      <div class="topic-chip"><span>📜</span> History</div>
+      <div class="topic-chip"><span>📰</span> Current Affairs</div>
+      <div class="topic-chip"><span>💻</span> Computer Awareness</div>
+      <div class="topic-chip"><span>🏦</span> Banking Awareness</div>
+      <div class="topic-chip"><span>🚂</span> Railway GK</div>
+      <div class="topic-chip"><span>🔢</span> Quantitative Aptitude</div>
+      <div class="topic-chip"><span>📊</span> Data Interpretation</div>
+      <div class="topic-chip"><span>🌱</span> Environment & Ecology</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY RISERANK ── -->
+<section class="why">
+  <div class="section-inner">
+    <div class="section-tag">Why RiseRank</div>
+    <h2 class="section-title">Built for Serious Aspirants</h2>
+    <p class="section-sub">We are not a general quiz app — RiseRank is purpose-built for government exam preparation.</p>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon">🎯</div><div class="why-title">Exam-Focused Content</div><div class="why-desc">Every question is mapped to the actual exam syllabus and difficulty level.</div></div>
+      <div class="why-card"><div class="why-icon">⚡</div><div class="why-title">New Questions Daily</div><div class="why-desc">Fresh quiz every morning. Never repeat the same questions twice.</div></div>
+      <div class="why-card"><div class="why-icon">🇮🇳</div><div class="why-title">Hindi + English</div><div class="why-desc">Full bilingual experience — toggle between languages at any time.</div></div>
+      <div class="why-card"><div class="why-icon">📶</div><div class="why-title">Works Offline</div><div class="why-desc">Practice quizzes cached automatically. Prepare anywhere, even without internet.</div></div>
+      <div class="why-card"><div class="why-icon">🆓</div><div class="why-title">Completely Free</div><div class="why-desc">No subscription. No hidden fees. Full access to all features at zero cost.</div></div>
+      <div class="why-card"><div class="why-icon">🔔</div><div class="why-title">Smart Reminders</div><div class="why-desc">Daily quiz alerts, streak reminders and leaderboard updates via push notifications.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LIVE TEST ── -->
+<section class="live-test-section" id="live-tests">
+  <div class="section-inner">
+    <div class="live-section-header">
+      <div class="live-badge-wrap">
+        <span class="live-dot-pulse"></span>
+        <span class="live-badge-text">LIVE TESTS</span>
+      </div>
+      <h2 class="live-section-title">Compete Live with <em>Thousands of Students</em></h2>
+      <p class="live-section-sub">
+        Scheduled mock tests at fixed time slots — everyone starts together, real-time leaderboard, All India Rank in minutes.
+      </p>
+    </div>
+
+    <!-- cards row -->
+    <div class="live-cards-row">
+
+      <!-- card 1: upcoming (with countdown) -->
+      <div class="lt-card lt-card-upcoming">
+        <div class="lt-card-top">
+          <span class="lt-badge lt-badge-upcoming">📅 Upcoming</span>
+          <span class="lt-category">SSC CGL</span>
+        </div>
+        <h3 class="lt-title">SSC CGL Grand Mock Test #12</h3>
+        <p class="lt-meta">100 Questions &nbsp;·&nbsp; 60 Minutes &nbsp;·&nbsp; General Awareness + Reasoning</p>
+        <div class="lt-countdown" id="lt-countdown-main">
+          <div class="lt-cd-block"><span class="lt-cd-value" id="cd-h">00</span><span class="lt-cd-label">Hrs</span></div>
+          <span class="lt-cd-sep">:</span>
+          <div class="lt-cd-block"><span class="lt-cd-value" id="cd-m">00</span><span class="lt-cd-label">Min</span></div>
+          <span class="lt-cd-sep">:</span>
+          <div class="lt-cd-block"><span class="lt-cd-value" id="cd-s">00</span><span class="lt-cd-label">Sec</span></div>
+        </div>
+        <div class="lt-footer">
+          <span class="lt-participants">👥 <span id="lt-count">4,812</span> registered</span>
+          <a href="#download" class="lt-join-btn lt-join-upcoming">Set Reminder →</a>
+        </div>
+      </div>
+
+      <!-- card 2: live -->
+      <div class="lt-card lt-card-live">
+        <div class="lt-card-top">
+          <span class="lt-badge lt-badge-live"><span class="lt-live-dot"></span>LIVE NOW</span>
+          <span class="lt-category">Railway RRB</span>
+        </div>
+        <h3 class="lt-title">Railway NTPC Speed Test — Mathematics</h3>
+        <p class="lt-meta">75 Questions &nbsp;·&nbsp; 45 Minutes &nbsp;·&nbsp; 12,340 Attempting</p>
+        <div class="lt-live-bar-wrap">
+          <div class="lt-live-bar" id="lt-live-bar"></div>
+        </div>
+        <p class="lt-live-bar-label">Time remaining: <span id="lt-live-remaining">38:22</span></p>
+        <div class="lt-footer" style="margin-top:16px">
+          <div class="lt-live-pulse-row">
+            <span class="lt-live-dot-lg"></span>
+            <span style="font-size:13px;color:#ef4444;font-weight:600">Active Right Now</span>
+          </div>
+          <a href="#download" class="lt-join-btn lt-join-live">Join on App →</a>
+        </div>
+      </div>
+
+      <!-- card 3: ended (leaderboard preview) -->
+      <div class="lt-card lt-card-ended">
+        <div class="lt-card-top">
+          <span class="lt-badge lt-badge-ended">✅ Ended</span>
+          <span class="lt-category">Banking SBI PO</span>
+        </div>
+        <h3 class="lt-title">SBI PO Prelim Mock — Quantitative Aptitude</h3>
+        <p class="lt-meta">35 Questions &nbsp;·&nbsp; 20 Minutes &nbsp;·&nbsp; 9,204 Participated</p>
+        <div class="lt-leaderboard">
+          <div class="lt-lb-row lt-lb-gold">
+            <span class="lt-lb-rank">🥇</span>
+            <span class="lt-lb-name">Priya Sharma</span>
+            <span class="lt-lb-score">35/35</span>
+            <span class="lt-lb-time">18m 02s</span>
+          </div>
+          <div class="lt-lb-row lt-lb-silver">
+            <span class="lt-lb-rank">🥈</span>
+            <span class="lt-lb-name">Rahul Verma</span>
+            <span class="lt-lb-score">35/35</span>
+            <span class="lt-lb-time">18m 47s</span>
+          </div>
+          <div class="lt-lb-row lt-lb-bronze">
+            <span class="lt-lb-rank">🥉</span>
+            <span class="lt-lb-name">Ankita Singh</span>
+            <span class="lt-lb-score">34/35</span>
+            <span class="lt-lb-time">19m 11s</span>
+          </div>
+        </div>
+        <div class="lt-footer" style="margin-top:12px">
+          <span class="lt-participants">Avg score: 28.4 / 35</span>
+          <a href="#download" class="lt-join-btn lt-join-ended">Full Results →</a>
+        </div>
+      </div>
+
+    </div><!-- /cards row -->
+
+    <!-- feature strip -->
+    <div class="lt-features-strip">
+      <div class="lt-feat-item">
+        <span class="lt-feat-icon">⚡</span>
+        <div>
+          <strong>Simultaneous Start</strong>
+          <p>Everyone starts at the exact same second — no unfair advantage.</p>
+        </div>
+      </div>
+      <div class="lt-feat-item">
+        <span class="lt-feat-icon">🏆</span>
+        <div>
+          <strong>All India Rank</strong>
+          <p>Real-time leaderboard updates as results come in.</p>
+        </div>
+      </div>
+      <div class="lt-feat-item">
+        <span class="lt-feat-icon">📊</span>
+        <div>
+          <strong>Deep Analysis</strong>
+          <p>Compare your score, time & topic accuracy against toppers.</p>
+        </div>
+      </div>
+      <div class="lt-feat-item">
+        <span class="lt-feat-icon">🔔</span>
+        <div>
+          <strong>Test Reminders</strong>
+          <p>Get push notifications so you never miss a live test.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PRACTICE BY TOPIC ── -->
+<section class="practice-section" id="practice">
+  <div class="section-inner">
+    <div class="practice-header">
+      <div class="section-tag">Targeted Practice</div>
+      <h2 class="practice-title">Practice <em>Your Weak Topics</em></h2>
+      <p class="practice-sub">
+        Stop studying randomly. Pick a topic, choose how many questions, and get instant feedback — so you improve exactly where it matters.
+      </p>
+    </div>
+
+    <div class="practice-layout">
+      <!-- Left: Subject tree -->
+      <div class="practice-tree-col">
+        <div class="practice-exam-tabs">
+          <button class="pt-btn pt-btn-active" onclick="switchExam('ssc',this)">📘 SSC CGL</button>
+          <button class="pt-btn" onclick="switchExam('railway',this)">🚂 Railway</button>
+          <button class="pt-btn" onclick="switchExam('banking',this)">🏦 Banking</button>
+        </div>
+
+        <!-- SSC subjects -->
+        <div id="exam-ssc" class="exam-subjects active-exam">
+          <div class="subject-block">
+            <div class="subject-title" onclick="toggleSubject(this)">
+              <span>📖 English</span>
+              <span class="subject-arrow">▼</span>
+            </div>
+            <div class="topic-list show">
+              <div class="topic-item" onclick="selectTopic(this,'english','one_word_substitution')">One Word Substitution</div>
+              <div class="topic-item" onclick="selectTopic(this,'english','idioms_phrases')">Idioms &amp; Phrases</div>
+              <div class="topic-item selected" onclick="selectTopic(this,'english','antonyms')">Antonyms</div>
+              <div class="topic-item" onclick="selectTopic(this,'english','synonyms')">Synonyms</div>
+              <div class="topic-item" onclick="selectTopic(this,'english','spelling')">Spelling</div>
+              <div class="topic-item" onclick="selectTopic(this,'english','active_passive_voice')">Active &amp; Passive Voice</div>
+              <div class="topic-item" onclick="selectTopic(this,'english','direct_indirect_speech')">Direct &amp; Indirect Speech</div>
+            </div>
+          </div>
+          <div class="subject-block">
+            <div class="subject-title" onclick="toggleSubject(this)">
+              <span>🌏 GK &amp; GS</span>
+              <span class="subject-arrow">▶</span>
+            </div>
+            <div class="topic-list">
+              <div class="topic-item" onclick="selectTopic(this,'gk_gs','history')">History</div>
+              <div class="topic-item" onclick="selectTopic(this,'gk_gs','polity')">Polity</div>
+              <div class="topic-item" onclick="selectTopic(this,'gk_gs','geography')">Geography</div>
+              <div class="topic-item" onclick="selectTopic(this,'gk_gs','economics')">Economics</div>
+              <div class="topic-item" onclick="selectTopic(this,'gk_gs','science')">Science</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Railway placeholder -->
+        <div id="exam-railway" class="exam-subjects">
+          <div class="coming-soon-msg">🚂 Railway topics coming soon</div>
+        </div>
+        <!-- Banking placeholder -->
+        <div id="exam-banking" class="exam-subjects">
+          <div class="coming-soon-msg">🏦 Banking topics coming soon</div>
+        </div>
+      </div>
+
+      <!-- Right: Practice config card -->
+      <div class="practice-config-col">
+        <div class="practice-card" id="practice-card">
+          <!-- Selected topic header -->
+          <div class="pc-topic-header">
+            <div class="pc-topic-badge" id="pc-topic-badge">Antonyms</div>
+            <div class="pc-subject-label" id="pc-subject-label">English · SSC CGL</div>
+          </div>
+
+          <!-- Stats row (mock) -->
+          <div class="pc-stats-row">
+            <div class="pc-stat"><span class="pc-stat-val" id="pc-q-count">124</span><span class="pc-stat-label">Questions</span></div>
+            <div class="pc-stat"><span class="pc-stat-val">Medium</span><span class="pc-stat-label">Difficulty</span></div>
+            <div class="pc-stat"><span class="pc-stat-val" id="pc-attempted">4,812</span><span class="pc-stat-label">Attempted</span></div>
+          </div>
+
+          <!-- How many questions -->
+          <div class="pc-count-section">
+            <p class="pc-count-label">How many questions?</p>
+            <div class="pc-preset-row">
+              <button class="pc-preset" onclick="setPracticeCount(10,this)">10</button>
+              <button class="pc-preset pc-preset-active" onclick="setPracticeCount(20,this)">20</button>
+              <button class="pc-preset" onclick="setPracticeCount(30,this)">30</button>
+              <button class="pc-preset" onclick="setPracticeCount(50,this)">50</button>
+            </div>
+            <div class="pc-custom-row">
+              <span style="font-size:13px;color:#64748B">Custom:</span>
+              <input type="number" id="pc-custom-input" min="1" max="100" value="20"
+                class="pc-custom-input"
+                oninput="document.getElementById('pc-start-label').textContent='Start '+this.value+' Questions'" />
+              <span style="font-size:13px;color:#64748B">questions</span>
+            </div>
+          </div>
+
+          <!-- Duration note -->
+          <p class="pc-duration-note" id="pc-duration-note">⏱ Approx 30 minutes · ~90 sec per question</p>
+
+          <!-- CTA -->
+          <a href="#download" class="pc-start-btn">
+            <span id="pc-start-label">Start 20 Questions</span>
+            <span>→</span>
+          </a>
+          <p style="font-size:11px;color:#94A3B8;text-align:center;margin-top:8px">Available on Android app · Free</p>
+        </div>
+
+        <!-- Mini tip -->
+        <div class="practice-tip">
+          <span style="font-size:18px">💡</span>
+          <p>Attempted questions are saved to your history so you can review mistakes later.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials">
+  <div class="section-inner">
+    <div class="section-tag">Student Reviews</div>
+    <h2 class="section-title">What Our Students Say</h2>
+    <p class="section-sub">Lakhs of aspirants are using RiseRank to crack their dream exam.</p>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"The All India Rank feature is incredible. After every quiz I can see exactly where I stand among thousands of students. It keeps me pushing harder!"</div>
+        <div class="testi-author"><div class="testi-avatar">R</div><div><div class="testi-name">Rahul Sharma</div><div class="testi-exam">SSC CGL Aspirant · Bihar</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Current affairs in Hindi is a game changer for me. Earlier I struggled to read English articles. Now I read Hindi and score better in GK."</div>
+        <div class="testi-author"><div class="testi-avatar">P</div><div><div class="testi-name">Priya Singh</div><div class="testi-exam">RRB NTPC Aspirant · UP</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"The explanations after each question are amazing. They don't just say the answer — they explain the full context with 'Key Points'. I learn so much."</div>
+        <div class="testi-author"><div class="testi-avatar">A</div><div><div class="testi-name">Amit Kumar</div><div class="testi-exam">Bihar SI Aspirant · Patna</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"I've tried many apps but RiseRank's question quality is the best. Questions are exactly like the real exam pattern — not copy-paste from old papers."</div>
+        <div class="testi-author"><div class="testi-avatar">S</div><div><div class="testi-name">Sunita Devi</div><div class="testi-exam">IBPS Clerk Aspirant · Jharkhand</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★☆</div>
+        <div class="testi-text">"The offline mode saved me when I was travelling. I could still attempt my daily quiz on the train without any internet. Really impressive app."</div>
+        <div class="testi-author"><div class="testi-avatar">V</div><div><div class="testi-name">Vikas Yadav</div><div class="testi-exam">SSC CHSL Aspirant · MP</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Best free app for RRB preparation. I cleared my RRB Group D prelims after 3 months on RiseRank. The streak system kept me consistent every single day."</div>
+        <div class="testi-author"><div class="testi-avatar">M</div><div><div class="testi-name">Manish Gupta</div><div class="testi-exam">RRB Group D · Selected ✅</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DOWNLOAD ── -->
+<div class="download" id="download">
+  <div class="download-inner">
+    <div>
+      <div style="display:inline-block;background:rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;font-size:12px;color:#fff;margin-bottom:16px;font-weight:600">📱 Free App Download</div>
+      <h2>Start Your <em>Exam Preparation</em><br/>for Free Today</h2>
+      <p>Join 1 lakh+ students who are already preparing smarter with RiseRank. Daily quizzes, current affairs, All India Rank — all in one free app.</p>
+      <div class="download-badges">
+        <a href="#" class="download-badge">
+          <svg viewBox="0 0 24 24" fill="white"><path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.36.6 1.24 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/></svg>
+          <div class="download-badge-text"><small>Get it on</small><strong>Google Play</strong></div>
+        </a>
+        <a href="#" class="download-badge">
+          <svg viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/></svg>
+          <div class="download-badge-text"><small>Download on</small><strong>App Store</strong></div>
+        </a>
+      </div>
+      <div class="download-features">
+        <div class="dl-feat">100% Free — No subscription required</div>
+        <div class="dl-feat">All India Rank after every quiz</div>
+        <div class="dl-feat">Available in English & Hindi</div>
+        <div class="dl-feat">Works offline — Practice without internet</div>
+        <div class="dl-feat">Daily new quizzes for SSC, Railway, Banking & Bihar SI</div>
+      </div>
+    </div>
+    <div class="app-preview">
+      <div class="preview-phone">
+        <div class="preview-screen">
+          <div class="preview-header">🏆 Your Result</div>
+          <div class="preview-body">
+            <div style="background:#0D9488;border-radius:6px;padding:6px 10px;font-size:9px;color:#fff;font-weight:700;margin-bottom:8px;text-align:center">Good try, Rajan! Keep practicing!</div>
+            <div style="text-align:center;margin-bottom:8px">
+              <div style="font-size:24px;font-weight:800;color:#1E3A8A">78%</div>
+            </div>
+            <div style="background:#EFF6FF;border-radius:8px;padding:8px;margin-bottom:6px;display:flex;align-items:center;gap:6px">
+              <span style="font-size:16px">🏆</span>
+              <div><div style="font-size:10px;font-weight:700;color:#1E3A8A">Your Rank</div><div style="font-size:14px;font-weight:800;color:#1E3A8A">247 <span style="font-size:10px;color:#64748B">/ 8,420</span></div></div>
+            </div>
+            <div style="display:flex;gap:4px;margin-bottom:6px">
+              <div style="flex:1;background:#f0fdf4;border-radius:6px;padding:5px;text-align:center"><div style="font-size:12px;font-weight:800;color:#16a34a">15</div><div style="font-size:8px;color:#64748B">Correct</div></div>
+              <div style="flex:1;background:#fef2f2;border-radius:6px;padding:5px;text-align:center"><div style="font-size:12px;font-weight:800;color:#dc2626">05</div><div style="font-size:8px;color:#64748B">Wrong</div></div>
+            </div>
+            <div style="background:#fff;border-radius:8px;padding:8px;box-shadow:0 1px 4px rgba(0,0,0,.06)">
+              <div style="font-size:9px;font-weight:700;color:#64748B;margin-bottom:4px">YOUR ANSWERS</div>
+              <div style="display:flex;gap:3px;flex-wrap:wrap">
+                <div style="width:20px;height:20px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;font-weight:700">1</div>
+                <div style="width:20px;height:20px;border-radius:50%;background:#dc2626;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;font-weight:700">2</div>
+                <div style="width:20px;height:20px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;font-weight:700">3</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="preview-phone" style="transform:translateY(-20px)">
+        <div class="preview-screen">
+          <div class="preview-header">💡 Solution</div>
+          <div class="preview-body">
+            <div style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:8px;padding:8px;margin-bottom:6px">
+              <div style="font-size:9px;font-weight:700;color:#b91c1c">✗ Your Answer</div>
+              <div style="font-size:9px;color:#b91c1c">Anna University</div>
+            </div>
+            <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:8px;margin-bottom:6px">
+              <div style="font-size:9px;font-weight:700;color:#15803d">✓ Correct Answer</div>
+              <div style="font-size:9px;color:#15803d">Bharathiar University</div>
+            </div>
+            <div style="background:#EFF6FF;border-radius:8px;padding:8px">
+              <div style="font-size:8px;font-weight:700;color:#1E3A8A;margin-bottom:3px">EXPLANATION</div>
+              <div style="font-size:9px;color:#1e40af;line-height:1.5">DRDO sanctioned ₹99.15L to Bharathiar University for developing antidotes against toxic OPCs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FAQ ── -->
+<section class="faq" id="faq">
+  <div class="section-inner">
+    <div class="section-tag">FAQ</div>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-sub">Everything you need to know about RiseRank.</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is RiseRank completely free? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Yes, RiseRank is 100% free. There is no subscription, no premium tier and no hidden fees. All features including daily quizzes, current affairs, All India Rank, leaderboard and bookmarks are available at zero cost.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Which exams does RiseRank cover? <span class="faq-icon">+</span></div>
+        <div class="faq-a">RiseRank currently covers SSC (CGL, CHSL, MTS, GD, CPO), Railway (NTPC, Group D, JE, ALP), Banking (IBPS PO, Clerk, SBI PO, Clerk, RRB) and Bihar SI / Police exams. More exams are being added continuously in 2026.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How does the All India Rank work? <span class="faq-icon">+</span></div>
+        <div class="faq-a">After you submit any quiz, RiseRank instantly calculates your rank among all students who attempted the same quiz. For example, "Rank 247 / 8,420 students" means you scored better than 8,173 students. Your rank updates in real time as more students attempt the quiz.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is the content available in Hindi? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Yes! All quiz questions and current affairs are available in both English and Hindi. You can switch between languages with a single tap at any time during the quiz.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How does the Daily Quiz work? <span class="faq-icon">+</span></div>
+        <div class="faq-a">A fresh quiz is published every day. Each quiz has MCQ questions tailored to your exam category. You get detailed explanations after submitting, and your rank is reflected in the leaderboard immediately.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I practice offline? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Yes. RiseRank caches quiz content automatically when you are connected to the internet. You can attempt cached quizzes without any internet connection. Your score and rank sync when you go back online.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is RiseRank available on iOS? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Currently RiseRank is available on Android (Play Store). iOS support is in development and will be released in 2026. You can register your interest via email and we will notify you when it launches.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:12px">
+          <div class="logo-icon">R</div>
+          Rise<span style="color:var(--orange)">Rank</span>
+        </div>
+        <p>India's best free exam preparation app for SSC, Railway, Banking and Bihar SI aspirants. Daily quizzes, current affairs, All India Rank & leaderboard.</p>
+        <div class="footer-social">
+          <div class="social-btn" title="Facebook">f</div>
+          <div class="social-btn" title="Instagram">ig</div>
+          <div class="social-btn" title="YouTube">yt</div>
+          <div class="social-btn" title="Telegram">tg</div>
+          <div class="social-btn" title="Twitter">tw</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Exams</h4>
+        <ul>
+          <li><a href="#">SSC CGL</a></li>
+          <li><a href="#">SSC CHSL</a></li>
+          <li><a href="#">SSC MTS</a></li>
+          <li><a href="#">RRB NTPC</a></li>
+          <li><a href="#">RRB Group D</a></li>
+          <li><a href="#">IBPS PO</a></li>
+          <li><a href="#">IBPS Clerk</a></li>
+          <li><a href="#">Bihar SI</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Features</h4>
+        <ul>
+          <li><a href="#">Daily Quiz</a></li>
+          <li><a href="#">Current Affairs</a></li>
+          <li><a href="#">All India Rank</a></li>
+          <li><a href="#">Leaderboard</a></li>
+          <li><a href="#">Bookmarks</a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">Offline Mode</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="https://api.riserank.in/api/v1/docs">API Docs</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="mailto:riserank021@gmail.com">riserank021@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 RiseRank. All rights reserved. Made with ❤️ for India's exam aspirants.</p>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const API = 'http://65.0.228.177:5001/api/v1';
+
+// ── LIVE DATA: Stats + Current Affairs + Quiz Questions ───────────────────────
+(async function loadLiveData() {
+  // 1. Stats banner
+  try {
+    const r = await fetch(API + '/public/stats');
+    const { data } = await r.json();
+    const fmt = n => n >= 100000 ? (Math.floor(n/100000)/10).toFixed(1) + 'L+' :
+                     n >= 1000   ? (Math.floor(n/1000))   + 'K+' : n+'';
+    const s = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = fmt(val); };
+    s('stat-users',     data.totalUsers);
+    s('stat-attempts',  data.totalAttempts);
+    s('stat-questions', data.totalQuestions);
+  } catch {}
+
+  // 2. Current affairs grid
+  try {
+    const r = await fetch(API + '/public/current-affairs?limit=6');
+    const { data } = await r.json();
+    const grid = document.getElementById('ca-grid');
+    if (grid && data && data.length) {
+      const CAT_COLORS = {
+        'national':'#EFF6FF','international':'#F0FDF4','economy':'#FFF7ED',
+        'science':'#F5F3FF','sports':'#FFF1F2','environment':'#F0FDFA','default':'#F8FAFC'
+      };
+      const CAT_LABELS = {
+        'national':'🏛️ National','international':'🌍 International','economy':'💰 Economy',
+        'science':'🔬 Science & Tech','sports':'🏅 Sports','environment':'🌿 Environment'
+      };
+      grid.innerHTML = data.map(item => {
+        const title = typeof item.title === 'object' ? (item.title.en || item.title.hi || '') : (item.title || '');
+        const summary = typeof item.summary === 'object' ? (item.summary.en || item.summary.hi || '') : (item.summary || '');
+        const cat = (item.category || 'default').toLowerCase();
+        const bg = CAT_COLORS[cat] || CAT_COLORS.default;
+        const label = CAT_LABELS[cat] || item.category || 'General';
+        const date = item.publishedAt ? new Date(item.publishedAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '';
+        return `<div style="background:#fff;border:1.5px solid #E2E8F0;border-radius:14px;padding:20px;transition:all .2s;cursor:pointer" onmouseover="this.style.boxShadow='0 8px 24px rgba(30,58,138,.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <span style="background:${bg};color:var(--primary);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px">${label}</span>
+            <span style="font-size:11px;color:var(--text-muted)">${date}</span>
+          </div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:8px">${title}</div>
+          ${summary ? `<div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${summary}</div>` : ''}
+          <div style="margin-top:12px;font-size:12px;font-weight:600;color:var(--primary-dark)">Read full article in app →</div>
+        </div>`;
+      }).join('');
+    }
+  } catch {}
+
+  // 3. Quiz demo questions — fetched from live DB
+  try {
+    const r = await fetch(API + '/public/demo-quiz');
+    const { data } = await r.json();
+    if (data && data.length === 3) {
+      QUESTIONS.length = 0;
+      data.forEach(q => QUESTIONS.push(q));
+      // Re-render first question with fresh data
+      renderQuestion();
+    }
+  } catch {}
+})();
+
+// ── QUIZ DEMO ────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    q: 'The term "NIFTY" is associated with which of the following?',
+    options: ['National Stock Exchange (NSE)', 'Bombay Stock Exchange (BSE)', 'Reserve Bank of India (RBI)', 'Securities and Exchange Board (SEBI)'],
+    correct: 0,
+    explanation: 'NIFTY stands for National Index Fifty. It is the flagship index of the <strong>National Stock Exchange (NSE)</strong> of India, comprising 50 large-cap stocks across key sectors.'
+  },
+  {
+    q: 'Which city is known as the "Pink City" of India?',
+    options: ['Jodhpur', 'Jaipur', 'Udaipur', 'Ajmer'],
+    correct: 1,
+    explanation: '<strong>Jaipur</strong>, the capital of Rajasthan, is called the Pink City. The city was painted pink in 1876 to welcome Prince Albert of Wales. Pink signifies hospitality in Rajputana culture.'
+  },
+  {
+    q: 'The Indian Constitution was adopted by the Constituent Assembly on which date?',
+    options: ['26 January 1950', '15 August 1947', '26 November 1949', '2 October 1948'],
+    correct: 2,
+    explanation: 'The Constitution of India was adopted on <strong>26 November 1949</strong> — observed as Constitution Day. It came into force on 26 January 1950, which we celebrate as Republic Day.'
+  }
+];
+
+let currentQ = 0;
+let answered = false;
+let userAnswers = [];
+let timerInterval = null;
+let timeLeft = 180;
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    const m = Math.floor(timeLeft / 60).toString().padStart(2,'0');
+    const s = (timeLeft % 60).toString().padStart(2,'0');
+    const el = document.getElementById('timer-display');
+    if (el) el.textContent = m + ':' + s;
+    if (timeLeft <= 0) { clearInterval(timerInterval); showResult(); }
+  }, 1000);
+}
+
+// Build a single option's HTML based on state
+function buildOption(idx, text, state) {
+  // state: 'default' | 'correct' | 'wrong' | 'missed' | 'locked'
+  const styles = {
+    default: 'border:2px solid #E2E8F0;background:#fff;cursor:pointer;',
+    locked:  'border:2px solid #E2E8F0;background:#fff;cursor:default;opacity:0.6;',
+    correct: 'border:2px solid #16A34A;background:#f0fdf4;cursor:default;',
+    wrong:   'border:2px solid #DC2626;background:#fef2f2;cursor:default;',
+    missed:  'border:2px solid #16A34A;background:#f0fdf4;cursor:default;opacity:0.75;',
+  };
+  const badgeStyles = {
+    default: 'background:#F8FAFC;border:2px solid #E2E8F0;color:#64748B;',
+    locked:  'background:#F8FAFC;border:2px solid #E2E8F0;color:#64748B;',
+    correct: 'background:#16A34A;border:2px solid #16A34A;color:#fff;',
+    wrong:   'background:#DC2626;border:2px solid #DC2626;color:#fff;',
+    missed:  'background:#16A34A;border:2px solid #16A34A;color:#fff;',
+  };
+  const textStyles = {
+    default: 'color:#0F172A;',
+    locked:  'color:#0F172A;',
+    correct: 'color:#15803d;font-weight:600;',
+    wrong:   'color:#b91c1c;font-weight:600;',
+    missed:  'color:#15803d;font-weight:600;',
+  };
+  const clickHandler = state === 'default' ? `onclick="selectOption(${idx})"` : '';
+  return `
+    <button ${clickHandler} style="display:flex;align-items:center;gap:14px;border-radius:12px;padding:14px 16px;width:100%;text-align:left;${styles[state]}">
+      <div style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;${badgeStyles[state]}">${idx + 1}</div>
+      <div style="font-size:15px;font-weight:500;${textStyles[state]}">${text}</div>
+    </button>`;
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const progress = ((currentQ + 1) / QUESTIONS.length) * 100;
+  document.getElementById('quiz-progress').style.width = progress + '%';
+
+  const optionsHtml = q.options.map((opt, i) => buildOption(i, opt, 'default')).join('');
+
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-body">
+      <div class="quiz-q-num">Question ${currentQ + 1} of ${QUESTIONS.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div id="options-container" style="display:flex;flex-direction:column;gap:10px;">${optionsHtml}</div>
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-next" id="next-btn" onclick="nextQuestion()" disabled>
+        ${currentQ < QUESTIONS.length - 1 ? 'Next →' : 'See Result'}
+      </button>
+    </div>
+  `;
+}
+
+function selectOption(selected) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[currentQ];
+  userAnswers.push({ selected, correct: q.correct });
+
+  // Re-render each option with the correct state — no class manipulation
+  const container = document.getElementById('options-container');
+  container.innerHTML = q.options.map((opt, idx) => {
+    let state = 'locked';
+    if (idx === selected && selected === q.correct) state = 'correct';
+    else if (idx === selected && selected !== q.correct) state = 'wrong';
+    else if (idx === q.correct && selected !== q.correct) state = 'missed';
+    return buildOption(idx, opt, state);
+  }).join('');
+
+  document.getElementById('next-btn').disabled = false;
+}
+
+function nextQuestion() {
+  if (!answered) return;
+  currentQ++;
+  answered = false;
+  if (currentQ >= QUESTIONS.length) { showSubmitConfirm(); return; }
+  renderQuestion();
+}
+
+function showSubmitConfirm() {
+  const overlay = document.createElement('div');
+  overlay.id = 'submit-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:20px;padding:28px 24px;max-width:320px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);">
+      <div style="font-size:40px;margin-bottom:12px;">📋</div>
+      <div style="font-size:18px;font-weight:800;color:#0F172A;margin-bottom:8px;">Submit Quiz?</div>
+      <div style="font-size:14px;color:#64748B;margin-bottom:24px;line-height:1.5;">You've answered all ${QUESTIONS.length} questions. Ready to see your score and rank?</div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="document.getElementById('submit-overlay').remove();currentQ=QUESTIONS.length-1;userAnswers.pop();answered=false;renderQuestion();"
+          style="flex:1;padding:12px;border-radius:10px;border:2px solid #E2E8F0;background:#fff;font-size:14px;font-weight:600;cursor:pointer;color:#64748B;">← Review</button>
+        <button onclick="document.getElementById('submit-overlay').remove();showResult();"
+          style="flex:1;padding:12px;border-radius:10px;border:none;background:#0D9488;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Submit ✓</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+function rateQuiz(rating) {
+  const widget = document.getElementById('rating-widget');
+  if (!widget) return;
+  const labels = ['','Very Bad','Bad','Average','Good','Very Good'];
+  const emojis = ['','😞','😕','😐','😊','😍'];
+  widget.innerHTML = `
+    <div style="font-size:32px;margin-bottom:8px;">${emojis[rating]}</div>
+    <div style="font-size:14px;font-weight:700;color:#0F172A;">Thanks for "${labels[rating]}"!</div>
+    <div style="font-size:12px;color:#64748B;margin-top:4px;">Your feedback helps us improve question quality.</div>
+  `;
+}
+
+function showResult() {
+  clearInterval(timerInterval);
+  const correct = userAnswers.filter(a => a.selected === a.correct).length;
+  const total = QUESTIONS.length;
+  const pct = Math.round((correct / total) * 100);
+  const rank = Math.floor(Math.random() * 300) + 150;
+  const totalStudents = Math.floor(Math.random() * 3000) + 5000;
+
+  const msg = pct === 100 ? 'Outstanding! Perfect Score! 🔥' :
+              pct >= 66 ? 'Good try! Keep practicing & improving.' :
+              'Keep going! Consistency is the key!';
+
+  const dots = Array.from({length: total}, (_, i) => {
+    if (i >= userAnswers.length) return `<div class="palette-dot" style="background:#94a3b8">${i+1}</div>`;
+    const a = userAnswers[i];
+    const cls = a.selected === a.correct ? 'correct' : a.selected === null ? 'skipped' : 'wrong';
+    return `<div class="palette-dot ${cls}">${i+1}</div>`;
+  }).join('');
+
+  const solutionDots = QUESTIONS.map((q, i) => {
+    const ua = userAnswers[i];
+    const isCorrect = ua && ua.selected === q.correct;
+    const bg = !ua ? '#94a3b8' : isCorrect ? '#16A34A' : '#DC2626';
+    return `<button onclick="document.getElementById('sol-q-${i}').scrollIntoView({behavior:'smooth',block:'start'})"
+      style="width:30px;height:30px;border-radius:50%;background:${bg};color:#fff;font-size:12px;font-weight:700;border:none;cursor:pointer;flex-shrink:0;">${i+1}</button>`;
+  }).join('');
+
+  document.getElementById('quiz-progress').style.width = '100%';
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-result-panel">
+      <div class="result-motivational">${msg}</div>
+      <div class="result-score-big">${pct}%</div>
+      <div class="result-score-label">SSC CGL — General Knowledge · ${correct}/${total} correct</div>
+      <div class="result-rank">
+        <div style="font-size:28px">🏆</div>
+        <div>
+          <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase">Your Rank</div>
+          <div class="result-rank-num">${rank} <span style="font-size:14px;font-weight:400;color:var(--text-muted)">/ ${totalStudents.toLocaleString()} students</span></div>
+          <div class="result-rank-detail">You scored better than ${totalStudents - rank} aspirants</div>
+        </div>
+      </div>
+      <div class="result-stats">
+        <div class="result-stat"><div class="result-stat-num" style="color:var(--green)">${correct}</div><div class="result-stat-label">Correct</div></div>
+        <div class="result-stat"><div class="result-stat-num" style="color:var(--red)">${total - correct}</div><div class="result-stat-label">Wrong</div></div>
+        <div class="result-stat"><div class="result-stat-num" style="color:var(--text-muted)">${Math.floor((180 - timeLeft) / 60)}m ${(180 - timeLeft) % 60}s</div><div class="result-stat-label">Time</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Your Answers</div>
+      <div class="result-palette">${dots}</div>
+
+      <!-- Question quality rating -->
+      <div id="rating-widget" style="margin-bottom:20px;padding:16px;background:#f8fafc;border-radius:14px;border:1.5px solid #e2e8f0;text-align:center;">
+        <div style="font-size:13px;font-weight:700;color:#64748B;margin-bottom:12px;">Are you happy with the question quality?</div>
+        <div style="display:flex;justify-content:center;gap:12px;">
+          ${[['😞','Very Bad'],['😕','Bad'],['😐','Average'],['😊','Good'],['😍','Very Good']].map(([emoji, label], i) =>
+            `<button onclick="rateQuiz(${i+1})" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:10px;"
+              onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='none'">
+              <div style="font-size:24px;">${emoji}</div>
+              <div style="font-size:10px;color:#94a3b8;font-weight:500;">${label}</div>
+            </button>`).join('')}
+        </div>
+      </div>
+
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:20px">This was a 3-question preview. Get 20 questions daily with full explanations in the app.</p>
+      <a href="#download" class="btn-cta-orange">Download App — It's Free</a>
+
+      <div style="margin-top:28px;text-align:left;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+          <div style="font-size:13px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.5px;">💡 Solutions</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">${solutionDots}</div>
+        </div>
+        ${QUESTIONS.map((q, i) => {
+          const ua = userAnswers[i];
+          const isCorrect = ua && ua.selected === q.correct;
+          const userOpt = ua !== undefined && ua.selected !== null ? q.options[ua.selected] : null;
+          const correctOpt = q.options[q.correct];
+          return `
+            <div id="sol-q-${i}" style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;scroll-margin-top:80px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <div style="width:24px;height:24px;border-radius:50%;background:${isCorrect ? '#16A34A' : '#DC2626'};display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700;flex-shrink:0;">${i+1}</div>
+                <div style="font-size:12px;font-weight:700;color:var(--text-muted);">${isCorrect ? '✓ Correct' : '✗ Wrong'}</div>
+              </div>
+              <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px;line-height:1.55;">${q.q}</div>
+              ${ua && !isCorrect && userOpt ? `<div style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:13px;color:#b91c1c;"><strong>✗ Your answer:</strong> ${userOpt}</div>` : ''}
+              <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:13px;color:#15803d;"><strong>${isCorrect ? '✓ Correct!' : '✓ Correct answer:'}</strong> ${correctOpt}</div>
+              <div style="background:var(--primary-light);border:1.5px solid #bfdbfe;border-radius:8px;padding:10px 12px;margin-bottom:10px;">
+                <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">Explanation</div>
+                <div style="font-size:13px;color:#1e40af;line-height:1.65;">${q.explanation}</div>
+              </div>
+              <div id="helpful-${i}" style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid #f1f5f9;">
+                <span style="font-size:12px;color:#94a3b8;">Was this helpful?</span>
+                <div style="display:flex;gap:6px;">
+                  <button onclick="rateQuestion(${i},'up')" style="padding:4px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;" title="Yes">👍</button>
+                  <button onclick="rateQuestion(${i},'down')" style="padding:4px 12px;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;" title="No">👎</button>
+                </div>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function rateQuestion(idx, vote) {
+  const el = document.getElementById('helpful-' + idx);
+  if (!el) return;
+  el.innerHTML = `<span style="font-size:12px;color:#16A34A;font-weight:600;">${vote === 'up' ? '👍 Thanks for the feedback!' : '👎 We\'ll improve this question.'}</span>`;
+}
+
+// ── EXAM TABS ─────────────────────────────────────────────────────────────────
+const EXAMS = {
+  ssc: [
+    {icon:'📋',name:'SSC CGL',sub:'Combined Graduate Level',color:'#EFF6FF'},
+    {icon:'📝',name:'SSC CHSL',sub:'Combined Higher Secondary',color:'#EFF6FF'},
+    {icon:'👷',name:'SSC MTS',sub:'Multi Tasking Staff',color:'#EFF6FF'},
+    {icon:'🛡️',name:'SSC GD Constable',sub:'General Duty',color:'#EFF6FF'},
+    {icon:'⚖️',name:'SSC CPO',sub:'Central Police Organisation',color:'#EFF6FF'},
+    {icon:'⚙️',name:'SSC JE',sub:'Junior Engineer',color:'#EFF6FF'},
+    {icon:'✍️',name:'SSC Stenographer',sub:'Grade C & D',color:'#EFF6FF'},
+    {icon:'🔍',name:'SSC Selection Post',sub:'Phase XII',color:'#EFF6FF'},
+  ],
+  railway: [
+    {icon:'🚂',name:'RRB NTPC',sub:'Non-Technical Popular Categories',color:'#F0FDF4'},
+    {icon:'🔧',name:'RRB Group D',sub:'Level 1 Posts',color:'#F0FDF4'},
+    {icon:'⚡',name:'RRB JE',sub:'Junior Engineer',color:'#F0FDF4'},
+    {icon:'🚃',name:'RRB ALP',sub:'Assistant Loco Pilot',color:'#F0FDF4'},
+    {icon:'🔬',name:'RRB Technician',sub:'Grade 1 & 3',color:'#F0FDF4'},
+    {icon:'🛤️',name:'RRB SSE',sub:'Senior Section Engineer',color:'#F0FDF4'},
+    {icon:'👩‍⚕️',name:'RRB Staff Nurse',sub:'Paramedical Posts',color:'#F0FDF4'},
+    {icon:'📦',name:'DFCCIL',sub:'Dedicated Freight Corridor',color:'#F0FDF4'},
+  ],
+  banking: [
+    {icon:'🏦',name:'IBPS PO',sub:'Probationary Officer',color:'#FFF7ED'},
+    {icon:'💼',name:'IBPS Clerk',sub:'Clerical Cadre',color:'#FFF7ED'},
+    {icon:'🏧',name:'SBI PO',sub:'State Bank PO',color:'#FFF7ED'},
+    {icon:'💳',name:'SBI Clerk',sub:'Junior Associate',color:'#FFF7ED'},
+    {icon:'🌾',name:'IBPS RRB PO',sub:'Regional Rural Banks PO',color:'#FFF7ED'},
+    {icon:'🏘️',name:'IBPS RRB Clerk',sub:'Office Assistant',color:'#FFF7ED'},
+    {icon:'📈',name:'RBI Grade B',sub:'Reserve Bank of India',color:'#FFF7ED'},
+    {icon:'🏗️',name:'NABARD',sub:'Development Officer',color:'#FFF7ED'},
+  ],
+  police: [
+    {icon:'👮',name:'Bihar SI',sub:'Sub-Inspector — Bihar Police',color:'#FFF1F2'},
+    {icon:'🚔',name:'Bihar Police Constable',sub:'Civil & Home Guard',color:'#FFF1F2'},
+    {icon:'🏅',name:'BPSSC',sub:'Bihar Police Sub-ord Services',color:'#FFF1F2'},
+    {icon:'🔰',name:'Bihar Daroga',sub:'Bihar Police Daroga',color:'#FFF1F2'},
+    {icon:'⚔️',name:'UP Police Constable',sub:'Uttar Pradesh Police',color:'#FFF1F2'},
+    {icon:'🛡️',name:'Delhi Police Constable',sub:'Delhi Police',color:'#FFF1F2'},
+    {icon:'🚨',name:'SSC GD',sub:'GD Constable (BSF, CRPF)',color:'#FFF1F2'},
+    {icon:'🪖',name:'RPF Constable',sub:'Railway Protection Force',color:'#FFF1F2'},
+  ]
+};
+
+function renderExams(key){
+  document.getElementById('exam-grid').innerHTML = EXAMS[key].map(e=>`
+    <div class="exam-card" onclick="window.location='#download'">
+      <div class="exam-icon" style="background:${e.color}">${e.icon}</div>
+      <div class="exam-name">${e.name}</div>
+      <div class="exam-count">${e.sub}</div>
+      <div class="exam-arrow">→</div>
+    </div>
+  `).join('');
+}
+
+function switchTab(el, key){
+  document.querySelectorAll('.exam-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderExams(key);
+}
+
+function toggleFaq(el){
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-q').forEach(q=>{
+    q.classList.remove('open');
+    q.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){ el.classList.add('open'); el.nextElementSibling.classList.add('open'); }
+}
+
+function toggleMenu(){
+  const links = document.querySelector('.nav-links');
+  if(links.style.display === 'flex'){
+    links.style.display='none';
+  } else {
+    links.style.cssText='display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:#fff;padding:20px;gap:16px;border-bottom:1px solid #E2E8F0;z-index:99;box-shadow:0 4px 20px rgba(0,0,0,.1)';
+  }
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+// Init
+renderExams('ssc');
+renderQuestion();
+startTimer();
+
+/* ── PRACTICE SECTION: topic picker interactions ── */
+function switchExam(exam, btn) {
+  document.querySelectorAll('.pt-btn').forEach(b => b.classList.remove('pt-btn-active'));
+  btn.classList.add('pt-btn-active');
+  document.querySelectorAll('.exam-subjects').forEach(el => el.classList.remove('active-exam'));
+  var el = document.getElementById('exam-' + exam);
+  if (el) el.classList.add('active-exam');
+}
+
+function toggleSubject(titleEl) {
+  var block = titleEl.parentElement;
+  var topicList = block.querySelector('.topic-list');
+  var arrow = block.querySelector('.subject-arrow');
+  var isOpen = topicList.classList.contains('show');
+  topicList.classList.toggle('show', !isOpen);
+  arrow.textContent = isOpen ? '▶' : '▼';
+}
+
+var _practiceCount = 20;
+var _practiceTopic = 'Antonyms';
+var _practiceSubject = 'English';
+
+function selectTopic(el, subject, topic) {
+  document.querySelectorAll('.topic-item').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  _practiceTopic = el.textContent.trim();
+  _practiceSubject = el.closest('.subject-block').querySelector('.subject-title span').textContent.replace(/^[^ ]+ /,'').trim();
+  var badge = document.getElementById('pc-topic-badge');
+  var subLabel = document.getElementById('pc-subject-label');
+  if (badge) badge.textContent = _practiceTopic;
+  if (subLabel) subLabel.textContent = _practiceSubject + ' · SSC CGL';
+  // Random mock question counts
+  var el2 = document.getElementById('pc-q-count');
+  if (el2) el2.textContent = (Math.floor(Math.random()*80)+40).toString();
+  updateStartLabel();
+}
+
+function setPracticeCount(n, btn) {
+  document.querySelectorAll('.pc-preset').forEach(b => b.classList.remove('pc-preset-active'));
+  btn.classList.add('pc-preset-active');
+  _practiceCount = n;
+  var inp = document.getElementById('pc-custom-input');
+  if (inp) inp.value = n;
+  updateStartLabel();
+  var note = document.getElementById('pc-duration-note');
+  if (note) note.textContent = '⏱ Approx ' + Math.round(n*1.5) + ' minutes · ~90 sec per question';
+}
+
+function updateStartLabel() {
+  var lbl = document.getElementById('pc-start-label');
+  if (lbl) lbl.textContent = 'Start ' + _practiceCount + ' Questions';
+}
+
+/* ── LIVE TEST SECTION: countdown + live timer ── */
+(function() {
+  // Upcoming test: set target to next round hour (or add 4h from now)
+  var now = new Date();
+  var target = new Date(now);
+  target.setHours(target.getHours() + 1, 0, 0, 0);
+  // If the next full hour is < 15 min away, add another hour
+  if ((target - now) < 15 * 60 * 1000) target.setHours(target.getHours() + 1);
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tickCountdown() {
+    var diff = Math.max(0, target - Date.now());
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    var elH = document.getElementById('cd-h');
+    var elM = document.getElementById('cd-m');
+    var elS = document.getElementById('cd-s');
+    if (elH) elH.textContent = pad(h);
+    if (elM) elM.textContent = pad(m);
+    if (elS) elS.textContent = pad(s);
+    // animate participant count jitter
+    var elCount = document.getElementById('lt-count');
+    if (elCount && Math.random() < 0.08) {
+      var base = 4812;
+      elCount.textContent = (base + Math.floor(Math.random() * 40)).toLocaleString('en-IN');
+    }
+  }
+  setInterval(tickCountdown, 1000);
+  tickCountdown();
+
+  // Live test: countdown from 45 min (demo: starts at 38:22 and counts down)
+  var liveRemaining = 38 * 60 + 22;
+  function tickLive() {
+    if (liveRemaining <= 0) return;
+    liveRemaining--;
+    var m = Math.floor(liveRemaining / 60);
+    var s = liveRemaining % 60;
+    var el = document.getElementById('lt-live-remaining');
+    if (el) el.textContent = pad(m) + ':' + pad(s);
+    // update bar width
+    var pct = (liveRemaining / (45 * 60)) * 100;
+    var bar = document.getElementById('lt-live-bar');
+    if (bar) bar.style.width = pct + '%';
+  }
+  setInterval(tickLive, 1000);
+})();
+</script>
+</body>
+</html>

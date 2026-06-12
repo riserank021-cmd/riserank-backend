@@ -133,23 +133,37 @@ const getUserLeaderboardRank = async (userId, periodType = 'daily', examCategory
 // Called after quiz submit to update leaderboard snapshot
 const updateLeaderboardEntry = async (userId, examCategory, score) => {
   const now = new Date();
-  now.setHours(0, 0, 0, 0);
 
-  // Daily
-  await Leaderboard.findOneAndUpdate(
-    { user: userId, periodType: 'daily', periodDate: now, examCategory: 'all' },
-    { $inc: { score, totalQuizzes: 1, correctAnswers: score } },
-    { upsert: true, new: true }
-  );
+  // Daily date key
+  const daily = new Date(now);
+  daily.setHours(0, 0, 0, 0);
 
-  // Also for specific exam category
-  if (examCategory && examCategory !== 'all') {
-    await Leaderboard.findOneAndUpdate(
-      { user: userId, periodType: 'daily', periodDate: now, examCategory },
-      { $inc: { score, totalQuizzes: 1, correctAnswers: score } },
-      { upsert: true, new: true }
-    );
-  }
+  // Weekly date key — start of current week (Monday)
+  const weekly = new Date(daily);
+  const dayOfWeek = weekly.getDay(); // 0=Sun
+  const diffToMonday = (dayOfWeek === 0 ? -6 : 1 - dayOfWeek);
+  weekly.setDate(weekly.getDate() + diffToMonday);
+
+  // Alltime uses a fixed epoch date
+  const alltime = new Date('2024-01-01T00:00:00.000Z');
+
+  const inc = { $inc: { score, totalQuizzes: 1, correctAnswers: score } };
+  const opts = { upsert: true, new: true };
+
+  await Promise.all([
+    // Daily — all categories
+    Leaderboard.findOneAndUpdate({ user: userId, periodType: 'daily',   periodDate: daily,   examCategory: 'all' }, inc, opts),
+    // Weekly — all categories
+    Leaderboard.findOneAndUpdate({ user: userId, periodType: 'weekly',  periodDate: weekly,  examCategory: 'all' }, inc, opts),
+    // All time — all categories
+    Leaderboard.findOneAndUpdate({ user: userId, periodType: 'alltime', periodDate: alltime, examCategory: 'all' }, inc, opts),
+    // Per exam category entries
+    ...(examCategory && examCategory !== 'all' ? [
+      Leaderboard.findOneAndUpdate({ user: userId, periodType: 'daily',   periodDate: daily,   examCategory }, inc, opts),
+      Leaderboard.findOneAndUpdate({ user: userId, periodType: 'weekly',  periodDate: weekly,  examCategory }, inc, opts),
+      Leaderboard.findOneAndUpdate({ user: userId, periodType: 'alltime', periodDate: alltime, examCategory }, inc, opts),
+    ] : []),
+  ]);
 };
 
 // ── Category Stats ────────────────────────────────────────────────────────────

@@ -82,6 +82,8 @@ const list = async (query, isAdmin = false) => {
 
   if (query.examTag) filter.examTags = query.examTag;
   if (query.category) filter.category = query.category;
+  // tag filter — case-insensitive match (app sends capitalised tags like 'Economy')
+  if (query.tag) filter.tags = { $regex: new RegExp('^' + query.tag + '$', 'i') };
 
   if (query.search) {
     filter.$text = { $search: query.search };
@@ -90,6 +92,7 @@ const list = async (query, isAdmin = false) => {
   const [items, total] = await Promise.all([
     CurrentAffair.find(filter)
       .populate('category', 'name slug')
+      .populate('createdBy', 'name')
       .sort({ publishedAt: -1, createdAt: -1 })
       .skip(skip)
       .limit(limit)

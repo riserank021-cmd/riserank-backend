@@ -1,12 +1,13 @@
 #!/bin/bash
 # Run ONCE on EC2 to deploy the admin panel at riserank.in/admin
-# Usage: bash /var/www/riserank-backend/scripts/setup-admin-nginx.sh
+# Usage:
+#   cd /var/www/riserank-backend && bash scripts/setup-admin-nginx.sh
+#
+# The script will clone riserank-admin. Make sure git credentials are configured
+# on EC2 before running (they usually are via the existing riserank-backend clone).
 
 set -e
 
-# Provide token via: export GH_TOKEN=ghp_... before running, or set it below once
-GH_TOKEN="${GH_TOKEN:-}"
-ADMIN_REPO="https://riserank021-cmd:${GH_TOKEN}@github.com/riserank021-cmd/riserank-admin.git"
 ADMIN_DIR="/var/www/riserank-admin"
 NGINX_CONF="/etc/nginx/sites-available/riserank"
 
@@ -20,7 +21,9 @@ if [ -d "$ADMIN_DIR/.git" ]; then
   cd "$ADMIN_DIR" && git pull
 else
   echo "→ Cloning admin panel repo..."
-  cd /var/www && git clone "$ADMIN_REPO" riserank-admin
+  echo "   (enter credentials if prompted)"
+  cd /var/www
+  git clone https://github.com/riserank021-cmd/riserank-admin.git
 fi
 
 echo "✓ Admin repo ready at $ADMIN_DIR"
@@ -30,17 +33,15 @@ if grep -q "location /admin" "$NGINX_CONF" 2>/dev/null; then
   echo "✓ Nginx /admin block already exists — skipping"
 else
   echo "→ Adding /admin location to nginx..."
-  # Find the closing brace of the server block and insert before it
-  # We'll add it before the last closing brace in the config
-  sudo bash -c "cat >> $NGINX_CONF" << 'NGINX_BLOCK'
-
-    # Admin Panel
-    location /admin {
-        alias /var/www/riserank-admin/dist;
-        index index.html;
-        try_files $uri $uri/ /admin/index.html;
-    }
-NGINX_BLOCK
+  # Insert admin block before the last closing brace of the server block
+  sudo sed -i '/^}$/i\
+\
+    # Admin Panel\
+    location \/admin {\
+        alias \/var\/www\/riserank-admin\/dist;\
+        index index.html;\
+        try_files $uri $uri\/ \/admin\/index.html;\
+    }' "$NGINX_CONF"
   echo "✓ Nginx block added"
 fi
 

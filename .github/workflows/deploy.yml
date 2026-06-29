@@ -118,7 +118,14 @@ jobs:
             echo "=== [3/4] Installing production dependencies ==="
             npm ci --only=production
 
-            echo "=== [4/4] Reloading PM2 ==="
+            echo "=== [4/5] Syncing website files ==="
+            if [ -d "$APP_DIR/website" ]; then
+              sudo mkdir -p /var/www/riserank
+              sudo cp -r $APP_DIR/website/* /var/www/riserank/
+              echo "✓ Website files synced to /var/www/riserank"
+            fi
+
+            echo "=== [5/5] Reloading PM2 ==="
             pm2 reload ecosystem.config.js --env production --update-env || \
               pm2 start ecosystem.config.js --env production
             pm2 save

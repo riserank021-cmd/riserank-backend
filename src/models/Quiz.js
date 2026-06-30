@@ -5,7 +5,7 @@
  */
 
 const mongoose = require('mongoose');
-const { CONTENT_STATUS, EXAM_CATEGORIES, DIFFICULTY } = require('../config/constants');
+const { CONTENT_STATUS, EXAM_CATEGORIES, DIFFICULTY, QUIZ_TYPES } = require('../config/constants');
 
 const quizSchema = new mongoose.Schema(
   {
@@ -54,6 +54,40 @@ const quizSchema = new mongoose.Schema(
     negativeMarkValue: {
       type: Number,
       default: 0.25,
+    },
+
+    // ── Quiz Type ─────────────────────────────────
+    // Determines grouping, badge, and filtering in the app.
+    quizType: {
+      type: String,
+      enum: Object.values(QUIZ_TYPES),
+      default: QUIZ_TYPES.FULL_LENGTH,
+      index: true,
+    },
+
+    // ── Exam Phase ────────────────────────────────
+    // For exams with multiple stages (Prelims/Mains/CBT1/CBT2 etc.)
+    // e.g. 'prelims', 'mains', 'cbt1', 'cbt2', 'tier1', 'tier2', 'descriptive'
+    examPhase: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+
+    // ── Chapter / Section label ───────────────────
+    // Used for chapter tests and sectional tests.
+    // e.g. 'Reasoning', 'Quantitative Aptitude', 'General Knowledge'
+    chapterOrSection: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+
+    // ── PYQ metadata ──────────────────────────────
+    // For Previous Year Papers: the year of the actual exam paper.
+    pyqYear: {
+      type: Number,
+      default: null,
     },
 
     // ── Daily Quiz ────────────────────────────────
@@ -115,6 +149,7 @@ quizSchema.set('toObject', { virtuals: true });
 
 // ── Indexes ───────────────────────────────────────────────────────────────────
 quizSchema.index({ status: 1, examCategory: 1 });
+quizSchema.index({ status: 1, examCategory: 1, quizType: 1 });
 quizSchema.index({ isDaily: 1, scheduledDate: -1 });
 quizSchema.index({ createdAt: -1 });
 quizSchema.index({ attemptCount: -1 });

@@ -3,7 +3,7 @@
  */
 
 const Joi = require('joi');
-const { EXAM_CATEGORIES, DIFFICULTY, CONTENT_STATUS } = require('../config/constants');
+const { EXAM_CATEGORIES, DIFFICULTY, CONTENT_STATUS, QUIZ_TYPES } = require('../config/constants');
 
 const create = Joi.object({
   title: Joi.object({
@@ -31,6 +31,10 @@ const create = Joi.object({
     then: Joi.date().required(),
     otherwise: Joi.date().optional().allow(null),
   }),
+  quizType: Joi.string().valid(...Object.values(QUIZ_TYPES)).default(QUIZ_TYPES.FULL_LENGTH),
+  examPhase: Joi.string().trim().allow('', null).optional(),
+  chapterOrSection: Joi.string().trim().allow('', null).optional(),
+  pyqYear: Joi.number().integer().min(1990).max(2030).allow(null).optional(),
   status: Joi.string().valid(...Object.values(CONTENT_STATUS)).default(CONTENT_STATUS.DRAFT),
 });
 

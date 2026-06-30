@@ -39,6 +39,24 @@ const DIFFICULTY = {
   HARD: 'hard',
 };
 
+/**
+ * Quiz types — determines how a quiz is presented and grouped in the app.
+ *   full_length  — complete mock test (100-200 Qs, timed, mirrors real exam)
+ *   chapter      — focused on a single topic/chapter (15-30 Qs)
+ *   sectional    — one section of a full exam (Reasoning, Maths, English etc.)
+ *   pyq          — Previous Year Questions (actual past paper)
+ *   daily        — daily quiz (auto-scheduled)
+ *   practice     — auto-generated practice (unlimited, non-competitive)
+ */
+const QUIZ_TYPES = {
+  FULL_LENGTH: 'full_length',
+  CHAPTER:     'chapter',
+  SECTIONAL:   'sectional',
+  PYQ:         'pyq',
+  DAILY:       'daily',
+  PRACTICE:    'practice',
+};
+
 const ACTIVITY_ACTIONS = {
   // Auth
   USER_REGISTER: 'user.register',
@@ -136,6 +154,7 @@ module.exports = {
   LANGUAGES,
   QUIZ_STATUS,
   DIFFICULTY,
+  QUIZ_TYPES,
   ACTIVITY_ACTIONS,
   PAGINATION,
   STREAK,

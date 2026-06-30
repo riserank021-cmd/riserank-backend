@@ -51,7 +51,12 @@ const listQuizzes = async (query, isAdmin = false) => {
     filter.status = query.status;
   }
   if (query.examCategory) filter.examCategory = query.examCategory;
+  if (query.quizType) filter.quizType = query.quizType;
   if (query.isDaily !== undefined) filter.isDaily = query.isDaily === 'true';
+  if (query.search) {
+    const re = { $regex: query.search, $options: 'i' };
+    filter.$or = [{ 'title.en': re }, { 'title.hi': re }];
+  }
 
   const [items, total] = await Promise.all([
     Quiz.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
@@ -226,14 +231,18 @@ const getAttemptById = async (attemptId, userId) => {
     .lean();
   if (!attempt) throw new AppError('Attempt not found', 404);
 
-  // Compute All India Rank for this quiz attempt
+  // Compute All India Rank + topper score for this quiz attempt
   const quizId = attempt.quiz?._id ?? attempt.quiz;
-  const [rank, totalAttempts] = await Promise.all([
+  const [rank, totalAttempts, topAttempt] = await Promise.all([
     QuizAttempt.countDocuments({ quiz: quizId, isCompleted: true, score: { $gt: attempt.score } }),
     QuizAttempt.countDocuments({ quiz: quizId, isCompleted: true }),
+    QuizAttempt.findOne({ quiz: quizId, isCompleted: true }).sort({ score: -1 }).select('score percentage correctCount').lean(),
   ]);
   attempt.rank = rank + 1;
   attempt.totalAttempts = totalAttempts;
+  attempt.topScore = topAttempt?.score ?? attempt.score;
+  attempt.topPercentage = topAttempt?.percentage ?? attempt.percentage;
+  attempt.topCorrectCount = topAttempt?.correctCount ?? attempt.correctCount;
 
   return attempt;
 };

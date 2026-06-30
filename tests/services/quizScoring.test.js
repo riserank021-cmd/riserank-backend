@@ -77,6 +77,11 @@ describe('quiz.service — submitAttempt scoring', () => {
     Quiz.findByIdAndUpdate = jest.fn().mockReturnValue({ exec: execMock });
     Question.updateMany = jest.fn().mockReturnValue({ exec: execMock });
     User.findByIdAndUpdate = jest.fn().mockReturnValue({ exec: execMock });
+    User.findById = jest.fn().mockReturnValue({
+      select: jest.fn().mockReturnValue({
+        lean: jest.fn().mockResolvedValue(null),
+      }),
+    });
   });
 
   it('scores all-correct answers: 4/4 = 100%', async () => {

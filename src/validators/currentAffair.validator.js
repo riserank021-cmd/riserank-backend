@@ -48,8 +48,10 @@ const listQuery = Joi.object({
   status: Joi.string().valid(...Object.values(CONTENT_STATUS)).optional(),
   examTag: Joi.string().valid(...Object.values(EXAM_CATEGORIES)).optional(),
   category: Joi.string().hex().length(24).optional(),
+  tag: Joi.string().trim().max(50).optional(),
   search: Joi.string().trim().max(100).optional(),
   lang: Joi.string().valid('en', 'hi').default('en'),
+  language: Joi.string().valid('en', 'hi').optional(),
 });
 
 module.exports = { create, update, listQuery };

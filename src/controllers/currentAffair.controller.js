@@ -39,7 +39,9 @@ const getById = asyncHandler(async (req, res) => {
 
 const list = asyncHandler(async (req, res) => {
   const isAdmin = ['admin', 'superadmin'].includes(req.user?.role);
+  console.error('DEBUG_CA_LIST req.query =', JSON.stringify(req.query));
   const result = await caService.list(req.query, isAdmin);
+  console.error('DEBUG_CA_LIST result count =', result.items.length, 'total =', result.pagination?.total);
   return sendSuccess(res, { data: result.items, pagination: result.pagination });
 });
 

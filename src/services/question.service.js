@@ -3,6 +3,7 @@
  */
 
 const Question = require('../models/Question');
+const QuestionFeedback = require('../models/QuestionFeedback');
 const AppError = require('../utils/AppError');
 const { getPaginationParams, buildPaginationMeta } = require('../utils/pagination');
 const { CONTENT_STATUS } = require('../config/constants');
@@ -63,4 +64,29 @@ const getRandom = async ({ examCategory, difficulty, count = 10 }) => {
   ]);
 };
 
-module.exports = { create, update, remove, getById, list, getRandom };
+// "Was this helpful?" thumbs up/down on a question's explanation — one vote per user, upserted
+const submitFeedback = async (questionId, userId, isHelpful) => {
+  const question = await Question.findById(questionId).select('_id');
+  if (!question) throw new AppError('Question not found', 404);
+
+  const feedback = await QuestionFeedback.findOneAndUpdate(
+    { user: userId, question: questionId },
+    { isHelpful },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
+  return feedback;
+};
+
+// Batch-fetch the current user's votes for a set of questions (e.g. all questions in a quiz review)
+const getFeedbackMap = async (questionIds, userId) => {
+  const docs = await QuestionFeedback.find({ user: userId, question: { $in: questionIds } })
+    .select('question isHelpful')
+    .lean();
+  const map = {};
+  docs.forEach((d) => {
+    map[String(d.question)] = d.isHelpful;
+  });
+  return map;
+};
+
+module.exports = { create, update, remove, getById, list, getRandom, submitFeedback, getFeedbackMap };

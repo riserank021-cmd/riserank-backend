@@ -117,6 +117,25 @@ router.post('/', protect, authorize(...ADMIN_ROLES), validate(validators.create)
 
 /**
  * @openapi
+ * /questions/feedback:
+ *   get:
+ *     tags: [Questions]
+ *     summary: Get the current user's helpful/not-helpful votes for a set of questions
+ *     parameters:
+ *       - in: query
+ *         name: ids
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Comma-separated question IDs
+ *     responses:
+ *       200:
+ *         description: Map of questionId -> isHelpful (only includes questions the user voted on)
+ */
+router.get('/feedback', protect, validate(validators.feedbackQuery, 'query'), controller.getFeedbackMap);
+
+/**
+ * @openapi
  * /questions/{id}:
  *   get:
  *     tags: [Questions]
@@ -200,5 +219,33 @@ router.post('/', protect, authorize(...ADMIN_ROLES), validate(validators.create)
 router.get('/:id', protect, controller.getById);
 router.put('/:id', protect, authorize(...ADMIN_ROLES), validate(validators.update), controller.update);
 router.delete('/:id', protect, authorize(...ADMIN_ROLES), controller.remove);
+
+/**
+ * @openapi
+ * /questions/{id}/feedback:
+ *   post:
+ *     tags: [Questions]
+ *     summary: Vote whether a question's explanation was helpful
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [isHelpful]
+ *             properties:
+ *               isHelpful:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Vote recorded
+ */
+router.post('/:id/feedback', protect, validate(validators.feedback), controller.submitFeedback);
 
 module.exports = router;

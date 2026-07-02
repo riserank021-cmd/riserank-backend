@@ -28,4 +28,15 @@ const list = asyncHandler(async (req, res) => {
   return sendSuccess(res, { data: result.items, pagination: result.pagination });
 });
 
-module.exports = { create, update, remove, getById, list };
+const submitFeedback = asyncHandler(async (req, res) => {
+  const feedback = await questionService.submitFeedback(req.params.id, req.user._id, req.body.isHelpful);
+  return sendSuccess(res, { message: 'Feedback recorded', data: { isHelpful: feedback.isHelpful } });
+});
+
+const getFeedbackMap = asyncHandler(async (req, res) => {
+  const ids = req.query.ids.split(',').map((s) => s.trim()).filter(Boolean);
+  const map = await questionService.getFeedbackMap(ids, req.user._id);
+  return sendSuccess(res, { data: map });
+});
+
+module.exports = { create, update, remove, getById, list, submitFeedback, getFeedbackMap };

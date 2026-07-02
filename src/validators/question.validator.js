@@ -56,4 +56,12 @@ const listQuery = Joi.object({
   search: Joi.string().trim().max(100).optional(),
 });
 
-module.exports = { create, update, listQuery };
+const feedback = Joi.object({
+  isHelpful: Joi.boolean().required(),
+});
+
+const feedbackQuery = Joi.object({
+  ids: Joi.string().trim().required(),
+});
+
+module.exports = { create, update, listQuery, feedback, feedbackQuery };

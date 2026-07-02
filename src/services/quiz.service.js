@@ -227,7 +227,7 @@ const submitAttempt = async (quizId, userId, { answers, timeTakenSeconds, langua
 const getAttemptById = async (attemptId, userId) => {
   const attempt = await QuizAttempt.findOne({ _id: attemptId, user: userId, isCompleted: true })
     .populate('quiz', 'title description examCategory isDaily durationSeconds totalMarks negativeMarking negativeMarkValue')
-    .populate('answers.question', 'questionText options correctOption explanation difficulty subject topic')
+    .populate('answers.question', 'questionText options correctOption explanation difficulty subject topic year attemptCount correctCount')
     .lean();
   if (!attempt) throw new AppError('Attempt not found', 404);
 
